@@ -1,3 +1,7 @@
+/*
+ * TestBoard: Stores test 4x4 board and runs target calculations
+ * Authors: Julian Reyes, Mathew Grossman
+ */
 package experiment;
 
 import java.util.HashSet;

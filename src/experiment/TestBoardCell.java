@@ -1,5 +1,11 @@
 package experiment;
 
+/*
+ * TestBoardCell: Stores data for individual cell in TestBoard
+ * 
+ * Authors: Mathew Grossman, Julian Reyes
+ */
+import java.util.HashSet;
 import java.util.Set;
 
 public class TestBoardCell {
@@ -7,7 +13,7 @@ public class TestBoardCell {
 	private int col;
 	private boolean isRoom;
 	private boolean occupied;
-	Set<TestBoardCell> AdjList;
+	Set<TestBoardCell> adjList;
 	
 	public TestBoardCell(int row, int col) {
 		this.row = row;
@@ -15,10 +21,11 @@ public class TestBoardCell {
 	}
 	
 	public void addAdjacency(TestBoardCell cell) {
-		AdjList.add(cell);
+		adjList.add(cell);
 	}
 	public Set<TestBoardCell> getAdjList(){
-		return AdjList;
+		adjList = new HashSet <TestBoardCell>();
+		return adjList;
 	}
 	public void setRoom(boolean isRoom) {
 		this.isRoom = isRoom;
