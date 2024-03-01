@@ -68,33 +68,29 @@ public class TestBoard {
 		return;
 	}
 	
+	/** 
+	 * targetCalc: calculates legal targets for a move from startCell of length pathlength.
+	 * 
+	 */
 	private void targetCalc(TestBoardCell startCell, int pathlength) {
-		if(pathlength == 0) {
-			targets.add(startCell);
-			visited.clear();
-			return;
-		}
-		
-		
-		for(TestBoardCell cell : startCell.getAdjList()) {
-			if(visited.contains(cell)) {
-				continue;
-			}
-			
-			visited.add(cell);
-			
-			if(cell.isOccupied()) {
-				continue;
-			}
-			
-			if(cell.isRoom()) {
-				this.targetCalc(cell, 0);
-				return;			
-			}
-			
-			this.targetCalc(cell, pathlength - 1);
-		}
-		
+	    if (pathlength == 0) {
+	        targets.add(startCell);
+	        return;
+	    }
+	    
+	    visited.add(startCell); 
+	    
+	    for (TestBoardCell cell : startCell.getAdjList()) {
+	        if (!visited.contains(cell) && !cell.isOccupied()) {
+	            if (cell.isRoom()) {
+	                targets.add(cell);
+	            } else {
+	                targetCalc(cell, pathlength - 1);
+	            }
+	        }
+	    }
+	    
+	    visited.remove(startCell);
 	}
 	/** 
 	 *  getCell: returns the cell from the board at row, col.

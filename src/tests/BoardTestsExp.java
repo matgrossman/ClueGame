@@ -126,6 +126,7 @@ public class BoardTestsExp {
 		assertTrue(targetList.contains(board.getCell(3, 1)));
 		assertTrue(targetList.contains(board.getCell(0, 2)));
 		
+		targetList.clear();
 		/*
 		 * Layout:
 		 * O O O O
@@ -143,6 +144,8 @@ public class BoardTestsExp {
 		assertTrue(targetList.contains(board.getCell(2, 2)));
 		assertTrue(targetList.contains(board.getCell(0, 1)));
 		assertTrue(targetList.contains(board.getCell(3, 2)));
+		
+		targetList.clear();
 		
 		/*
 		 * Layout:
