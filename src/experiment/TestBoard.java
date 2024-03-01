@@ -9,11 +9,50 @@ import java.util.Set;
 
 
 public class TestBoard {
+	
+	private TestBoardCell[][] grid;
+	private Set<TestBoardCell> targets;
+	private Set<TestBoardCell> visited;
+	
+	final static int COLS = 4;
+	final static int ROWS = 4;
 	/** 
 	 * Default Constructor: Initializes Test Board
 	 */	
 	public TestBoard() {
 		super();
+		
+		grid = new TestBoardCell[ROWS][COLS];
+		
+		for(int i = 0; i < ROWS; i++) {
+			for(int j = 0; j < COLS; j++) {
+				grid[i][j] = new TestBoardCell(i,j);
+			}
+		}
+		
+//		Generate adjacency list
+		
+		for(int row = 0; row < ROWS; row++) {
+			for(int col = 0; col < COLS; col++) {
+				TestBoardCell cell = this.getCell(row, col);
+				
+//				Test for each edge. If not on an edge, there is an adjacency in that direction
+				if(row > 0) {
+					cell.addAdjacency(this.getCell(row - 1, col));
+				}
+				if(row + 1 < ROWS) {
+					cell.addAdjacency(this.getCell(row + 1, col));
+				}
+				
+				if(col > 0) {
+					cell.addAdjacency(this.getCell(row, col - 1));
+				}
+				if(col + 1 < ROWS) {
+					cell.addAdjacency(this.getCell(row, col + 1));
+				}
+
+			}
+		}
 	}
 	
 	/** 
@@ -31,8 +70,8 @@ public class TestBoard {
 	 */
 	
 	public TestBoardCell getCell(int row, int col) {
-	TestBoardCell returnCell = new TestBoardCell(row, col);
-		return returnCell;	
+		
+		return grid[row][col];	
 	}
 	
 	/** 
