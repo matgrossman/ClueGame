@@ -23,6 +23,8 @@ public class TestBoard {
 		super();
 		
 		grid = new TestBoardCell[ROWS][COLS];
+		targets = new HashSet<TestBoardCell>();
+		visited = new HashSet<TestBoardCell>();
 		
 		for(int i = 0; i < ROWS; i++) {
 			for(int j = 0; j < COLS; j++) {
@@ -61,6 +63,24 @@ public class TestBoard {
 	 */
 	
 	public void calcTargets( TestBoardCell startCell, int pathlength) {
+		
+		if(pathlength == 0) {
+			targets.add(startCell);
+		}
+		
+		
+		for(TestBoardCell cell : startCell.getAdjList()) {
+			if(cell.isOccupied()) {
+				continue;
+			}
+			
+			if(cell.isRoom()) {
+				this.calcTargets(cell, 0);
+			}
+			
+			this.calcTargets(cell, pathlength - 1);
+		}
+		
 		return;
 	}
 	
