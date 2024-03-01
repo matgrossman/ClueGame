@@ -1,0 +1,14 @@
+// Rooms and room cards
+Room, Classroom, C
+Room, Office, O
+Room, Labratory, L
+Room, Storage, S
+Room, Machine Shop, M
+Room, Computer Lab, Y
+Room, Coffee Shop, F
+Room, Lecture Hall, T
+Room, Game Room, G
+// other spaces on board
+Space, Unused, X
+Space, Walkway, W
+
