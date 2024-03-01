@@ -63,27 +63,39 @@ public class TestBoard {
 	 */
 	
 	public void calcTargets( TestBoardCell startCell, int pathlength) {
-		
+		targets.clear();
+		targetCalc(startCell, pathlength);
+		return;
+	}
+	
+	private void targetCalc(TestBoardCell startCell, int pathlength) {
 		if(pathlength == 0) {
 			targets.add(startCell);
+			visited.clear();
+			return;
 		}
 		
 		
 		for(TestBoardCell cell : startCell.getAdjList()) {
+			if(visited.contains(cell)) {
+				continue;
+			}
+			
+			visited.add(cell);
+			
 			if(cell.isOccupied()) {
 				continue;
 			}
 			
 			if(cell.isRoom()) {
-				this.calcTargets(cell, 0);
+				this.targetCalc(cell, 0);
+				return;			
 			}
 			
-			this.calcTargets(cell, pathlength - 1);
+			this.targetCalc(cell, pathlength - 1);
 		}
 		
-		return;
 	}
-	
 	/** 
 	 *  getCell: returns the cell from the board at row, col.
 	 * 
@@ -100,8 +112,7 @@ public class TestBoard {
 	 */
 	
 	public Set<TestBoardCell> getTargets() {
-		Set<TestBoardCell> returnSet = new HashSet <TestBoardCell>();
-		return returnSet;
+		return targets;
 		
 	}
 
