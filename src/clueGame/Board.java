@@ -1,5 +1,121 @@
 package clueGame;
 
+import java.util.HashSet;
+import java.util.Set;
+
+import experiment.TestBoardCell;
+
+
 public class Board {
+	private TestBoardCell[][] grid;
+	private Set<TestBoardCell> targets;
+	private Set<TestBoardCell> visited;
+	
+	final static int COLS = 4;
+	final static int ROWS = 4;
+	
+    /*
+    * variable and methods used for singleton pattern
+    */
+    private static Board Instance = new Board();
+
+	private Board() {
+		super();
+	}
+    /*
+     * initialize the board (since we are using singleton pattern)
+     */
+	public void initialize() {
+		grid = new TestBoardCell[ROWS][COLS];
+		targets = new HashSet<TestBoardCell>();
+		visited = new HashSet<TestBoardCell>();
+		
+		for(int i = 0; i < ROWS; i++) {
+			for(int j = 0; j < COLS; j++) {
+				grid[i][j] = new TestBoardCell(i,j);
+			}
+		}
+//		Generate adjacency list
+		
+		for(int row = 0; row < ROWS; row++) {
+			for(int col = 0; col < COLS; col++) {
+				TestBoardCell cell = this.getCell(row, col);
+				
+//				Test for each edge. If not on an edge, there is an adjacency in that direction
+				if(row > 0) {
+					cell.addAdjacency(this.getCell(row - 1, col));
+				}
+				if(row + 1 < ROWS) {
+					cell.addAdjacency(this.getCell(row + 1, col));
+				}
+				
+				if(col > 0) {
+					cell.addAdjacency(this.getCell(row, col - 1));
+				}
+				if(col + 1 < ROWS) {
+					cell.addAdjacency(this.getCell(row, col + 1));
+				}
+
+			}
+		}
+	}
+	
+	public static Board getInstance() {
+		return Instance;
+	}
+	/** 
+	 * calcTargets: calculates legal targets for a move from startCell of length pathlength.
+	 * 
+	 */
+	
+	public void calcTargets( TestBoardCell startCell, int pathlength) {
+		targets.clear();
+		targetCalc(startCell, pathlength);
+		return;
+	}
+	
+	/** 
+	 * targetCalc: calculates legal targets for a move from startCell of length pathlength.
+	 * 
+	 */
+	private void targetCalc(TestBoardCell startCell, int pathlength) {
+	    if (pathlength == 0) {
+	        targets.add(startCell);
+	        return;
+	    }
+	    
+	    visited.add(startCell); 
+	    
+	    for (TestBoardCell cell : startCell.getAdjList()) {
+	        if (!visited.contains(cell) && !cell.isOccupied()) {
+	            if (cell.isRoom()) {
+	                targets.add(cell);
+	            } else {
+	                targetCalc(cell, pathlength - 1);
+	            }
+	        }
+	    }
+	    
+	    visited.remove(startCell);
+	}
+	/** 
+	 *  getCell: returns the cell from the board at row, col.
+	 * 
+	 */
+	
+	public TestBoardCell getCell(int row, int col) {
+		
+		return grid[row][col];	
+	}
+	
+	/** 
+	 *   getTargets: gets the targets last created by calcTargets().
+	 * 
+	 */
+	
+	public Set<TestBoardCell> getTargets() {
+		return targets;
+		
+	}
 
 }
