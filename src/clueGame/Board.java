@@ -2,17 +2,23 @@ package clueGame;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.Map;
 
-import experiment.TestBoardCell;
+import clueGame.BoardCell;
 
 
 public class Board {
-	private TestBoardCell[][] grid;
-	private Set<TestBoardCell> targets;
-	private Set<TestBoardCell> visited;
+	private BoardCell[][] grid;
+	private Set<BoardCell> targets;
+	private Set<BoardCell> visited;
 	
-	final static int COLS = 4;
-	final static int ROWS = 4;
+	private String layoutConfigFile;
+	private String setupConfigFile;
+	
+	private int numCols;
+	private int numRows;
+	
+	private Map<Character, Room> roomMap;
 	
     /*
     * variable and methods used for singleton pattern
@@ -26,33 +32,33 @@ public class Board {
      * initialize the board (since we are using singleton pattern)
      */
 	public void initialize() {
-		grid = new TestBoardCell[ROWS][COLS];
-		targets = new HashSet<TestBoardCell>();
-		visited = new HashSet<TestBoardCell>();
+		grid = new BoardCell[numRows][numCols];
+		targets = new HashSet<BoardCell>();
+		visited = new HashSet<BoardCell>();
 		
-		for(int i = 0; i < ROWS; i++) {
-			for(int j = 0; j < COLS; j++) {
-				grid[i][j] = new TestBoardCell(i,j);
+		for(int i = 0; i < numRows; i++) {
+			for(int j = 0; j < numCols; j++) {
+				grid[i][j] = new BoardCell(i,j);
 			}
 		}
 //		Generate adjacency list
 		
-		for(int row = 0; row < ROWS; row++) {
-			for(int col = 0; col < COLS; col++) {
-				TestBoardCell cell = this.getCell(row, col);
+		for(int row = 0; row < numRows; row++) {
+			for(int col = 0; col < numCols; col++) {
+				BoardCell cell = this.getCell(row, col);
 				
 //				Test for each edge. If not on an edge, there is an adjacency in that direction
 				if(row > 0) {
 					cell.addAdjacency(this.getCell(row - 1, col));
 				}
-				if(row + 1 < ROWS) {
+				if(row + 1 < numRows) {
 					cell.addAdjacency(this.getCell(row + 1, col));
 				}
 				
 				if(col > 0) {
 					cell.addAdjacency(this.getCell(row, col - 1));
 				}
-				if(col + 1 < ROWS) {
+				if(col + 1 < numRows) {
 					cell.addAdjacency(this.getCell(row, col + 1));
 				}
 
@@ -60,6 +66,13 @@ public class Board {
 		}
 	}
 	
+	public void loadSetupConfig() {
+		return;
+	}
+	
+	public void loadLayoutConfig() {
+		return;
+	}
 	public static Board getInstance() {
 		return Instance;
 	}
@@ -68,7 +81,7 @@ public class Board {
 	 * 
 	 */
 	
-	public void calcTargets( TestBoardCell startCell, int pathlength) {
+	public void calcTargets( BoardCell startCell, int pathlength) {
 		targets.clear();
 		targetCalc(startCell, pathlength);
 		return;
@@ -78,7 +91,7 @@ public class Board {
 	 * targetCalc: calculates legal targets for a move from startCell of length pathlength.
 	 * 
 	 */
-	private void targetCalc(TestBoardCell startCell, int pathlength) {
+	private void targetCalc(BoardCell startCell, int pathlength) {
 	    if (pathlength == 0) {
 	        targets.add(startCell);
 	        return;
@@ -86,7 +99,7 @@ public class Board {
 	    
 	    visited.add(startCell); 
 	    
-	    for (TestBoardCell cell : startCell.getAdjList()) {
+	    for (BoardCell cell : startCell.getAdjList()) {
 	        if (!visited.contains(cell) && !cell.isOccupied()) {
 	            if (cell.isRoom()) {
 	                targets.add(cell);
@@ -103,19 +116,42 @@ public class Board {
 	 * 
 	 */
 	
-	public TestBoardCell getCell(int row, int col) {
-		
-		return grid[row][col];	
+	public BoardCell getCell(int row, int col) {
+		BoardCell cell = new BoardCell(0, 0);
+		return cell;	
 	}
 	
 	/** 
 	 *   getTargets: gets the targets last created by calcTargets().
 	 * 
 	 */
+	public Room getRoom(BoardCell cell) {
+		// TODO Auto-generated method stub
+		Room room = new Room();
+		return room;
+	}
+	public Room getRoom(char c) {
+		// TODO Auto-generated method stub
+		Room room = new Room();
+		return room;
+	}
 	
-	public Set<TestBoardCell> getTargets() {
+	public Set<BoardCell> getTargets() {
 		return targets;
 		
 	}
+	public void setConfigFiles(String string, String string2) {
+		// TODO Auto-generated method stub
+		return;
+	}
+	
+
+	public int getNumColumns() {
+		return numCols;
+	}
+	public int getNumRows() {
+		return numRows;
+	}
+
 
 }
