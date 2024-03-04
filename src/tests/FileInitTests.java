@@ -16,8 +16,8 @@ public class FileInitTests {
 	
 	// Constants that I will use to test whether the file was loaded correctly
 	public static final int LEGEND_SIZE = 11;
-	public static final int NUM_ROWS = 27;
-	public static final int NUM_COLUMNS = 24;
+	public static final int NUM_ROWS = 28;
+	public static final int NUM_COLUMNS = 25;
 
 	// NOTE: I made Board static because I only want to set it up one
 	// time (using @BeforeAll), no need to do setup before each test.

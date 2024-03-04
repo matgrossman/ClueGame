@@ -36,12 +36,12 @@ public class Board {
 	 * initialize the board (since we are using singleton pattern)
 	 */
 	public void initialize() {
-		grid = new BoardCell[numRows][numCols];
 		targets = new HashSet<BoardCell>();
 		visited = new HashSet<BoardCell>();
 		roomMap = new HashMap<Character, Room>();
 		this.loadSetupConfig();
 		this.loadLayoutConfig();
+		grid = new BoardCell[numRows][numCols];
 
 		for(int i = 0; i < numRows; i++) {
 			for(int j = 0; j < numCols; j++) {
@@ -90,10 +90,6 @@ public class Board {
 				r.setName(roomInfo[1].trim());
 				char label = roomInfo[2].trim().charAt(0);
 				roomMap.put(label, r);
-
-
-
-
 			}
 		}
 		catch(Exception e){
@@ -103,6 +99,39 @@ public class Board {
 	}
 
 	public void loadLayoutConfig() {
+		try {
+			FileReader reader = new FileReader(layoutConfigFile);
+			Scanner in = new Scanner(reader);
+			
+			int row = 0;
+			int col = 0;
+			while(in.hasNextLine()) {
+				col = 0;
+				String rowStr = in.nextLine();
+				String[] rowArr = rowStr.split(",");
+				numCols = rowArr.length;
+				
+//				for(String c : rowArr) {
+//					c = c.trim();
+//					BoardCell cell = new BoardCell(row,col);
+//					
+//					if(roomMap.containsKey(c.charAt(0))){
+//						cell = 
+//					}
+//					col++;
+//				}
+//				if(row == 0) {
+//					numCols = col;
+//				}
+//				if(col != numCols) {
+//					System.out.println("Error");
+//				}
+				row++;
+			}
+			numRows = row;
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+		}
 		return;
 	}
 	public static Board getInstance() {
