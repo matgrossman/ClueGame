@@ -80,7 +80,7 @@ public class Board {
 
 			while(in.hasNextLine()) {
 				String nextLine = in.nextLine();
-				if(nextLine.contains("//")) {
+				if(nextLine.contains("//") || nextLine.isBlank()) {
 					continue;
 				}
 
@@ -90,9 +90,13 @@ public class Board {
 				r.setName(roomInfo[1].trim());
 				char label = roomInfo[2].trim().charAt(0);
 				roomMap.put(label, r);
+
+
+
+
 			}
 		}
-		catch(FileNotFoundException e){
+		catch(Exception e){
 			return;
 		}
 		return;
