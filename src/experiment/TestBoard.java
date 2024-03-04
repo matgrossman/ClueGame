@@ -16,7 +16,7 @@ public class TestBoard {
 	
 	final static int COLS = 4;
 	final static int ROWS = 4;
-	/** 
+	/** b
 	 * Default Constructor: Initializes Test Board
 	 */	
 	public TestBoard() {
