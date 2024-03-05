@@ -221,6 +221,11 @@ public class Board {
 	public int getNumRows() {
 		return numRows;
 	}
+	
+	public Set<BoardCell> getAdjList(int row, int col) {
+		Set <BoardCell> adjList = grid[row][col].getAdjList();
+		return adjList;
+	}
 
 
 	

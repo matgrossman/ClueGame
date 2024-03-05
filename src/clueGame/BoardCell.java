@@ -20,6 +20,7 @@ public class BoardCell {
 	private boolean roomCenter;
 	private char secretPassage;
 	private char initial;
+	private boolean isOccupied;
 	
 	public BoardCell(int row, int col) {
 		this.row = row;
@@ -92,6 +93,11 @@ public class BoardCell {
 
 	public void setInitial(char initial) {
 		this.initial = initial;
+	}
+
+
+	public void setOccupied(boolean isOccupied) {
+		this.isOccupied = isOccupied;
 	}
 
 
