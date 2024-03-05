@@ -114,7 +114,7 @@ public class Board {
 
 			for(String c : rowArr) {
 				c = c.trim();
-				char roomLabel = c.charAt(0);
+				char roomLabel = Character.toUpperCase(c.charAt(0));
 				BoardCell cell = new BoardCell(row,col);
 
 				if(roomMap.containsKey(roomLabel)){
