@@ -29,12 +29,10 @@ public class Room {
 		return name;
 	}
 	public BoardCell getLabelCell() {
-		BoardCell labler = new BoardCell(0, 0);
-		return labler;
+		return labelCell;
 	}
 	public BoardCell getCenterCell() {
-		BoardCell labler = new BoardCell(0, 0);
-		return labler;
+		return centerCell;
 	}
 	
 	

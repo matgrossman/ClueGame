@@ -41,41 +41,12 @@ public class Board {
 		roomMap = new HashMap<Character, Room>();
 		this.loadSetupConfig();
 		this.loadLayoutConfig();
-		grid = new BoardCell[numRows][numCols];
 
-		for(int i = 0; i < numRows; i++) {
-			for(int j = 0; j < numCols; j++) {
-				grid[i][j] = new BoardCell(i,j);
-			}
-		}
-		//		Generate adjacency list
-
-		for(int row = 0; row < numRows; row++) {
-			for(int col = 0; col < numCols; col++) {
-				BoardCell cell = this.getCell(row, col);
-
-				//				Test for each edge. If not on an edge, there is an adjacency in that direction
-				if(row > 0) {
-					cell.addAdjacency(this.getCell(row - 1, col));
-				}
-				if(row + 1 < numRows) {
-					cell.addAdjacency(this.getCell(row + 1, col));
-				}
-
-				if(col > 0) {
-					cell.addAdjacency(this.getCell(row, col - 1));
-				}
-				if(col + 1 < numRows) {
-					cell.addAdjacency(this.getCell(row, col + 1));
-				}
-
-			}
-		}
 	}
 
 	public void loadSetupConfig() {
 		try {
-			FileReader reader = new FileReader(setupConfigFile);
+			FileReader reader = new FileReader("data/" + setupConfigFile);
 			Scanner in  = new Scanner(reader);
 
 			while(in.hasNextLine()) {
@@ -100,35 +71,81 @@ public class Board {
 
 	public void loadLayoutConfig() {
 		try {
-			FileReader reader = new FileReader(layoutConfigFile);
-			Scanner in = new Scanner(reader);
+//			Get rows, cols values
 			
+			
+			FileReader reader = new FileReader("data/" + layoutConfigFile);
+			Scanner rowCount = new Scanner(reader);
 			int row = 0;
 			int col = 0;
+			while(rowCount.hasNextLine()) {
+				String temp = rowCount.nextLine();
+				String[] tempArr = temp.split(",");
+				numCols = tempArr.length;
+				row++;
+			}
+			rowCount.close();
+			numRows = row;
+			row = 0;
+			col = 0;
+			grid = new BoardCell[numRows][numCols];
+			
+			FileReader read2 = new FileReader("data/" + layoutConfigFile);
+			Scanner in = new Scanner(read2);
+			
 			while(in.hasNextLine()) {
 				col = 0;
 				String rowStr = in.nextLine();
 				String[] rowArr = rowStr.split(",");
-				numCols = rowArr.length;
 				
-//				for(String c : rowArr) {
-//					c = c.trim();
-//					BoardCell cell = new BoardCell(row,col);
-//					
-//					if(roomMap.containsKey(c.charAt(0))){
-//						cell = 
-//					}
-//					col++;
-//				}
-//				if(row == 0) {
-//					numCols = col;
-//				}
-//				if(col != numCols) {
-//					System.out.println("Error");
-//				}
+				for(String c : rowArr) {
+					c = c.trim();
+					char roomLabel = c.charAt(0);
+					BoardCell cell = new BoardCell(row,col);
+					
+					if(roomMap.containsKey(roomLabel)){
+						cell.setInitial(roomLabel);
+					}
+					if(c.length() > 1) {
+						char special = c.charAt(1);
+						switch(special) {
+						case '#': //label
+							cell.setRoomLabel(true);
+							roomMap.get(cell.getInitial()).setLabelCell(cell);
+							break;
+						case '*': //center
+							cell.setRoomCenter(true);
+							roomMap.get(cell.getInitial()).setCenterCell(cell);
+							break;
+						case '^':
+							cell.setDoorDirection(DoorDirection.UP);
+							break;
+						case '>':
+							cell.setDoorDirection(DoorDirection.RIGHT);
+							break;
+						case 'v':
+							cell.setDoorDirection(DoorDirection.DOWN);
+							break;
+						case '<':
+							cell.setDoorDirection(DoorDirection.LEFT);
+							break;
+
+						}
+						
+						if(roomMap.containsKey(special)) {
+							cell.setSecretPassage(special);
+						}
+					}
+					
+					grid[row][col] = cell;
+					col++;
+				}
+
+				if(col != numCols) {
+					System.out.println("Error");
+				}
 				row++;
 			}
-			numRows = row;
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 		}
@@ -178,8 +195,7 @@ public class Board {
 	 */
 
 	public BoardCell getCell(int row, int col) {
-		BoardCell cell = new BoardCell(0, 0);
-		return cell;	
+		return grid[row][col];	
 	}
 
 	/** 
@@ -187,9 +203,8 @@ public class Board {
 	 * 
 	 */
 	public Room getRoom(BoardCell cell) {
-		// TODO Auto-generated method stub
-		Room room = new Room();
-		return room;
+		Room r = roomMap.get(cell.getInitial());
+		return r;
 	}
 	public Room getRoom(char c) {
 		// TODO Auto-generated method stub
