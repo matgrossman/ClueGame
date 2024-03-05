@@ -295,5 +295,6 @@ public class BoardAdjTargetTest {
 		assertTrue(targets.contains(board.getCell(18, 14)));	
 		assertTrue(targets.contains(board.getCell(19, 15)));
 
+		
 	}
 }
