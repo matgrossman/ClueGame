@@ -1,3 +1,6 @@
+/*
+ * Authors: Mathew Grossman, Julian Reyes
+ */
 package clueGame;
 
 import java.io.FileNotFoundException;
@@ -49,111 +52,117 @@ public class Board {
 
 	}
 
+	/*
+	 * loadSetupConfig: Loads in expected rooms from setup.txt file
+	 */
 	public void loadSetupConfig() throws BadConfigFormatException, FileNotFoundException {
-			FileReader reader = new FileReader("data/" + setupConfigFile);
-			Scanner in  = new Scanner(reader);
+		FileReader reader = new FileReader("data/" + setupConfigFile);
+		Scanner in  = new Scanner(reader);
 
-			while(in.hasNextLine()) {
-				String nextLine = in.nextLine();
-				if(nextLine.contains("//") || nextLine.isBlank()) {
-					continue;
-				}
+		while(in.hasNextLine()) {
+			String nextLine = in.nextLine();
+			if(nextLine.contains("//") || nextLine.isBlank()) {
+				continue;
+			}
 
-				String[] roomInfo = nextLine.split(",");
+			String[] roomInfo = nextLine.split(",");
 
-				if (roomInfo[0].equals("Room") || roomInfo[0].equals("Space")) {
-					Room r = new Room();
-					r.setName(roomInfo[1].trim());
-					char label = roomInfo[2].trim().charAt(0);
-					roomMap.put(label, r);
+			if (roomInfo[0].equals("Room") || roomInfo[0].equals("Space")) {
+				Room r = new Room();
+				r.setName(roomInfo[1].trim());
+				char label = roomInfo[2].trim().charAt(0);
+				roomMap.put(label, r);
+			}
+			else {
+				throw new BadConfigFormatException("Formatting Error in " + setupConfigFile);
+			}
+		}
+		return;
+	}
+
+
+	/*
+	 * loadLayoutConfig: Loads layout csv file and checks against setup file
+	 */
+	public void loadLayoutConfig() throws BadConfigFormatException, FileNotFoundException{
+		//			Get rows, cols values
+
+
+		FileReader reader = new FileReader("data/" + layoutConfigFile);
+		Scanner rowCount = new Scanner(reader);
+		int row = 0;
+		int col = 0;
+		while(rowCount.hasNextLine()) {
+			String temp = rowCount.nextLine();
+			String[] tempArr = temp.split(",");
+			numCols = tempArr.length;
+			row++;
+		}
+		rowCount.close();
+		numRows = row;
+		row = 0;
+		col = 0;
+		grid = new BoardCell[numRows][numCols];
+
+		FileReader read2 = new FileReader("data/" + layoutConfigFile);
+		Scanner in = new Scanner(read2);
+
+		while(in.hasNextLine()) {
+			col = 0;
+			String rowStr = in.nextLine();
+			String[] rowArr = rowStr.split(",");
+
+			for(String c : rowArr) {
+				c = c.trim();
+				char roomLabel = c.charAt(0);
+				BoardCell cell = new BoardCell(row,col);
+
+				if(roomMap.containsKey(roomLabel)){
+					cell.setInitial(roomLabel);
 				}
 				else {
-					throw new BadConfigFormatException("Formatting Error in " + setupConfigFile);
+					throw new BadConfigFormatException("Room type '" + roomLabel + "' not found in " + setupConfigFile);
 				}
+				if(c.length() > 1) {
+					char special = c.charAt(1);
+					switch(special) {
+					case '#': //label
+						cell.setRoomLabel(true);
+						roomMap.get(cell.getInitial()).setLabelCell(cell);
+						break;
+					case '*': //center
+						cell.setRoomCenter(true);
+						roomMap.get(cell.getInitial()).setCenterCell(cell);
+						break;
+					case '^':
+						cell.setDoorDirection(DoorDirection.UP);
+						break;
+					case '>':
+						cell.setDoorDirection(DoorDirection.RIGHT);
+						break;
+					case 'v':
+						cell.setDoorDirection(DoorDirection.DOWN);
+						break;
+					case '<':
+						cell.setDoorDirection(DoorDirection.LEFT);
+						break;
+
+					}
+
+					if(roomMap.containsKey(special)) {
+						cell.setSecretPassage(special);
+					}
+				}
+
+				grid[row][col] = cell;
+				col++;
 			}
-			return;
+
+			if(col != numCols) {
+				throw new BadConfigFormatException("Error: Column count not consistent. Double Check " + layoutConfigFile);
+			}
+			row++;
 		}
-
-
-	public void loadLayoutConfig() throws BadConfigFormatException, FileNotFoundException{
-//			Get rows, cols values
-			
-			
-			FileReader reader = new FileReader("data/" + layoutConfigFile);
-			Scanner rowCount = new Scanner(reader);
-			int row = 0;
-			int col = 0;
-			while(rowCount.hasNextLine()) {
-				String temp = rowCount.nextLine();
-				String[] tempArr = temp.split(",");
-				numCols = tempArr.length;
-				row++;
-			}
-			rowCount.close();
-			numRows = row;
-			row = 0;
-			col = 0;
-			grid = new BoardCell[numRows][numCols];
-			
-			FileReader read2 = new FileReader("data/" + layoutConfigFile);
-			Scanner in = new Scanner(read2);
-			
-			while(in.hasNextLine()) {
-				col = 0;
-				String rowStr = in.nextLine();
-				String[] rowArr = rowStr.split(",");
-				
-				for(String c : rowArr) {
-					c = c.trim();
-					char roomLabel = c.charAt(0);
-					BoardCell cell = new BoardCell(row,col);
-					
-					if(roomMap.containsKey(roomLabel)){
-						cell.setInitial(roomLabel);
-					}
-					else {
-						throw new BadConfigFormatException("Room type " + roomLabel + "not found in " + setupConfigFile);
-					}
-					if(c.length() > 1) {
-						char special = c.charAt(1);
-						switch(special) {
-						case '#': //label
-							cell.setRoomLabel(true);
-							roomMap.get(cell.getInitial()).setLabelCell(cell);
-							break;
-						case '*': //center
-							cell.setRoomCenter(true);
-							roomMap.get(cell.getInitial()).setCenterCell(cell);
-							break;
-						case '^':
-							cell.setDoorDirection(DoorDirection.UP);
-							break;
-						case '>':
-							cell.setDoorDirection(DoorDirection.RIGHT);
-							break;
-						case 'v':
-							cell.setDoorDirection(DoorDirection.DOWN);
-							break;
-						case '<':
-							cell.setDoorDirection(DoorDirection.LEFT);
-							break;
-
-						}
-						
-						if(roomMap.containsKey(special)) {
-							cell.setSecretPassage(special);
-						}
-					}
-					
-					grid[row][col] = cell;
-					col++;
-				}
-
-				if(col != numCols) {
-					throw new BadConfigFormatException("Error: Column count not consistent. Double Check " + layoutConfigFile);
-				}
-				row++;
-			}
 		return;
 	}
 	public static Board getInstance() {
@@ -165,8 +174,6 @@ public class Board {
 	 */
 
 	public void calcTargets( BoardCell startCell, int pathlength) {
-		targets.clear();
-		targetCalc(startCell, pathlength);
 		return;
 	}
 
@@ -175,24 +182,7 @@ public class Board {
 	 * 
 	 */
 	private void targetCalc(BoardCell startCell, int pathlength) {
-		if (pathlength == 0) {
-			targets.add(startCell);
-			return;
-		}
-
-		visited.add(startCell); 
-
-		for (BoardCell cell : startCell.getAdjList()) {
-			if (!visited.contains(cell) && !cell.isOccupied()) {
-				if (cell.isRoom()) {
-					targets.add(cell);
-				} else {
-					targetCalc(cell, pathlength - 1);
-				}
-			}
-		}
-
-		visited.remove(startCell);
+		return;
 	}
 	/** 
 	 *  getCell: returns the cell from the board at row, col.
@@ -212,7 +202,6 @@ public class Board {
 		return r;
 	}
 	public Room getRoom(char c) {
-		// TODO Auto-generated method stub
 		return roomMap.get(c);
 	}
 
@@ -225,7 +214,6 @@ public class Board {
 		setupConfigFile = setupConfig;
 		return;
 	}
-
 
 	public int getNumColumns() {
 		return numCols;

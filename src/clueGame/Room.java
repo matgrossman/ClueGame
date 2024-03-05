@@ -1,11 +1,14 @@
+/*
+ * Authors: Mathew Grossman, Julian Reyes
+ */
 package clueGame;
 
 public class Room {
 	private String name;
 	private BoardCell centerCell;
 	private BoardCell labelCell;
-	
-	
+
+
 	public Room(String name, BoardCell centerCell, BoardCell labelCell) {
 		super();
 		this.name = name;
@@ -25,7 +28,6 @@ public class Room {
 		this.labelCell = labelCell;
 	}
 	public String getName() {
-		// TODO Auto-generated method stub
 		return name;
 	}
 	public BoardCell getLabelCell() {
@@ -34,7 +36,7 @@ public class Room {
 	public BoardCell getCenterCell() {
 		return centerCell;
 	}
-	
-	
+
+
 
 }

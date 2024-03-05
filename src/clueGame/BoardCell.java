@@ -1,3 +1,7 @@
+/*
+ * Authors: Mathew Grossman, Julian Reyes
+ */
+
 package clueGame;
 
 import java.util.HashSet;
@@ -9,8 +13,7 @@ public class BoardCell {
 	private int row;
 	private int col;
 
-	private boolean isRoom;
-	private boolean isOccupied;
+
 	private Set<BoardCell> adjList;
 	private DoorDirection doorDirection;
 	private boolean roomLabel;
@@ -36,62 +39,29 @@ public class BoardCell {
 		return adjList;
 	}
 	
-	public void setRoom(boolean isRoom) {
-		this.isRoom = isRoom;
-	}
-	
-	public boolean isRoom() {
-		return isRoom;
-	}
-	
-	public void setOccupied(boolean isOccupied) {
-		this.isOccupied = isOccupied;
-	}
-	
-	public boolean isOccupied() {
-		return isOccupied;
-	}
-
-
 	public int getRow() {
 		return row;
 	}
-
-
-	public void setRow(int row) {
-		this.row = row;
-	}
-
 
 	public int getCol() {
 		return col;
 	}
 
-
-	public void setCol(int col) {
-		this.col = col;
-	}
-
-
 	public void setDoorDirection(DoorDirection doorDirection) {
 		this.doorDirection = doorDirection;
 	}
-
 
 	public void setRoomLabel(boolean roomLabel) {
 		this.roomLabel = roomLabel;
 	}
 
-
 	public void setRoomCenter(boolean roomCenter) {
 		this.roomCenter = roomCenter;
 	}
 
-
 	public void setSecretPassage(char secretPassage) {
 		this.secretPassage = secretPassage;
 	}
-
 
 	public boolean isDoorway() {
 		if(doorDirection == DoorDirection.NONE) {
@@ -100,21 +70,17 @@ public class BoardCell {
 		return true;
 	}
 
-
 	public DoorDirection getDoorDirection() {
 		return doorDirection;
 	}
-
 
 	public boolean isLabel() {
 		return roomLabel;
 	}
 
-
 	public boolean isRoomCenter() {
 		return roomCenter;
 	}
-
 
 	public char getSecretPassage() {
 		return secretPassage;
@@ -123,7 +89,6 @@ public class BoardCell {
 	public char getInitial() {
 		return initial;
 	}
-
 
 	public void setInitial(char initial) {
 		this.initial = initial;
