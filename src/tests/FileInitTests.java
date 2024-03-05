@@ -84,7 +84,7 @@ public class FileInitTests {
 				if (cell.isDoorway())
 					numDoors++;
 			}
-		Assert.assertEquals(13, numDoors);
+		Assert.assertEquals(15, numDoors);
 	}
 
 	// Test a few room cells to ensure the room initial is correct.
@@ -132,7 +132,7 @@ public class FileInitTests {
 		assertFalse( cell.isLabel() );
 		
 		// test a closet
-		cell = board.getCell(4, 24);
+		cell = board.getCell(5, 24);
 		room = board.getRoom( cell ) ;
 		assertTrue( room != null );
 		assertEquals( room.getName(), "Unused" ) ;

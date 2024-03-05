@@ -31,21 +31,25 @@ public class Board {
 
 	private Board() {
 		super();
+		targets = new HashSet<BoardCell>();
+		visited = new HashSet<BoardCell>();
+		roomMap = new HashMap<Character, Room>();
 	}
 	/*
 	 * initialize the board (since we are using singleton pattern)
 	 */
-	public void initialize() {
-		targets = new HashSet<BoardCell>();
-		visited = new HashSet<BoardCell>();
-		roomMap = new HashMap<Character, Room>();
-		this.loadSetupConfig();
-		this.loadLayoutConfig();
+	public void initialize()  {
+
+		try {
+			this.loadSetupConfig();
+			this.loadLayoutConfig();
+		} catch (Exception e) {
+			System.out.println(e.getMessage());;
+		}
 
 	}
 
-	public void loadSetupConfig() {
-		try {
+	public void loadSetupConfig() throws BadConfigFormatException, FileNotFoundException {
 			FileReader reader = new FileReader("data/" + setupConfigFile);
 			Scanner in  = new Scanner(reader);
 
@@ -57,20 +61,21 @@ public class Board {
 
 				String[] roomInfo = nextLine.split(",");
 
-				Room r = new Room();
-				r.setName(roomInfo[1].trim());
-				char label = roomInfo[2].trim().charAt(0);
-				roomMap.put(label, r);
+				if (roomInfo[0].equals("Room") || roomInfo[0].equals("Space")) {
+					Room r = new Room();
+					r.setName(roomInfo[1].trim());
+					char label = roomInfo[2].trim().charAt(0);
+					roomMap.put(label, r);
+				}
+				else {
+					throw new BadConfigFormatException("Formatting Error in " + setupConfigFile);
+				}
 			}
-		}
-		catch(Exception e){
 			return;
 		}
-		return;
-	}
 
-	public void loadLayoutConfig() {
-		try {
+
+	public void loadLayoutConfig() throws BadConfigFormatException, FileNotFoundException{
 //			Get rows, cols values
 			
 			
@@ -105,6 +110,9 @@ public class Board {
 					
 					if(roomMap.containsKey(roomLabel)){
 						cell.setInitial(roomLabel);
+					}
+					else {
+						throw new BadConfigFormatException("Room type " + roomLabel + "not found in " + setupConfigFile);
 					}
 					if(c.length() > 1) {
 						char special = c.charAt(1);
@@ -142,13 +150,10 @@ public class Board {
 				}
 
 				if(col != numCols) {
-					System.out.println("Error");
+					throw new BadConfigFormatException("Error: Column count not consistent. Double Check " + layoutConfigFile);
 				}
 				row++;
 			}
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-		}
 		return;
 	}
 	public static Board getInstance() {
