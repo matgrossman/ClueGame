@@ -12,6 +12,7 @@ import java.util.Map;
 import java.util.Scanner;
 
 import clueGame.BoardCell;
+import experiment.TestBoardCell;
 
 
 public class Board {
@@ -46,8 +47,10 @@ public class Board {
 		try {
 			this.loadSetupConfig();
 			this.loadLayoutConfig();
+			this.calcAdj();
 		} catch (Exception e) {
 			System.out.println(e.getMessage());;
+			e.printStackTrace();
 		}
 
 	}
@@ -165,6 +168,102 @@ public class Board {
 		}
 		return;
 	}
+
+	public void calcAdj() {
+
+		for(int row = 0; row < numRows; row++) {
+			for(int col = 0; col < numCols; col++) {
+
+				BoardCell cell = this.getCell(row, col);
+
+				//				If its not a room center or a walkway, it doesn't have adjacency
+				if(!cell.isRoomCenter() && cell.getInitial() != 'W') {
+					if(roomMap.containsKey(cell.getSecretPassage())){
+						BoardCell roomCenter1 = roomMap.get(cell.getInitial()).getCenterCell();
+						BoardCell roomCenter2 = roomMap.get(cell.getSecretPassage()).getCenterCell();
+						roomCenter1.addAdjacency(roomCenter2);
+						roomCenter2.addAdjacency(roomCenter1);
+					}
+					continue;
+				}
+
+				//				Doorways
+				//				Room Centers
+				if(cell.getDoorDirection() != DoorDirection.NONE) {
+					BoardCell roomCell = new BoardCell();
+					Room doorRoom = new Room();
+					BoardCell centerCell = new BoardCell();
+
+					switch(cell.getDoorDirection()) {
+					case UP:
+						roomCell = this.getCell(row - 1, col);
+						doorRoom = roomMap.get(roomCell.getInitial());
+						centerCell = doorRoom.getCenterCell();
+
+						cell.addAdjacency(centerCell);
+						centerCell.addAdjacency(cell);
+						break;
+					case DOWN:
+						roomCell = this.getCell(row + 1, col);
+						doorRoom = roomMap.get(roomCell.getInitial());
+						centerCell = doorRoom.getCenterCell();
+
+						cell.addAdjacency(centerCell);
+						centerCell.addAdjacency(cell);
+						break;
+					case LEFT:
+						roomCell = this.getCell(row, col - 1);
+						doorRoom = roomMap.get(roomCell.getInitial());
+						centerCell = doorRoom.getCenterCell();
+
+						cell.addAdjacency(centerCell);
+						centerCell.addAdjacency(cell);
+						break;
+					case RIGHT:
+						roomCell = this.getCell(row, col + 1);
+						doorRoom = roomMap.get(roomCell.getInitial());
+						centerCell = doorRoom.getCenterCell();
+
+						cell.addAdjacency(centerCell);
+						centerCell.addAdjacency(cell);
+						break;
+					}
+
+				}
+				
+//				if(cell)
+				
+
+				if(row > 0) {
+					BoardCell closeCell = this.getCell(row - 1, col);
+					if(closeCell.getInitial() == 'W') {
+						cell.addAdjacency(closeCell);
+					}
+				}
+				if(row + 1 < numRows) {
+					BoardCell closeCell = this.getCell(row + 1, col);
+					if(closeCell.getInitial() == 'W') {
+						cell.addAdjacency(closeCell);
+					}				
+				}
+
+				if(col > 0) {
+					BoardCell closeCell = this.getCell(row, col - 1);
+					if(closeCell.getInitial() == 'W') {
+						cell.addAdjacency(closeCell);
+					}				}
+				if(col + 1 < numCols) {
+					BoardCell closeCell = this.getCell(row, col + 1);
+					if(closeCell.getInitial() == 'W') {
+						cell.addAdjacency(closeCell);
+					}				
+				}
+
+			}
+		}
+		System.out.println("lol");
+		return;
+	}
 	public static Board getInstance() {
 		return Instance;
 	}
@@ -221,12 +320,12 @@ public class Board {
 	public int getNumRows() {
 		return numRows;
 	}
-	
+
 	public Set<BoardCell> getAdjList(int row, int col) {
-		Set <BoardCell> adjList = grid[row][col].getAdjList();
+		Set <BoardCell> adjList = this.getCell(row, col).getAdjList();
 		return adjList;
 	}
 
 
-	
+
 }

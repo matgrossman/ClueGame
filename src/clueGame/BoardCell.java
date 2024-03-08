@@ -31,9 +31,13 @@ public class BoardCell {
 		adjList = new HashSet<BoardCell>();
 	}
 	
+	public BoardCell() {
+		super();
+	}
 	
 	public void addAdjacency(BoardCell cell) {
 		adjList.add(cell);
+		return;
 	}
 	
 	public Set<BoardCell> getAdjList(){
