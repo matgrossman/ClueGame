@@ -104,5 +104,9 @@ public class BoardCell {
 		this.isOccupied = isOccupied;
 	}
 
+	public boolean isOccupied() {
+		return this.isOccupied;
+	}
+
 
 }

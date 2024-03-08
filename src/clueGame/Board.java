@@ -187,8 +187,6 @@ public class Board {
 					continue;
 				}
 
-				//				Doorways
-				//				Room Centers
 				if(cell.getDoorDirection() != DoorDirection.NONE) {
 					BoardCell roomCell = new BoardCell();
 					Room doorRoom = new Room();
@@ -230,9 +228,6 @@ public class Board {
 					}
 
 				}
-				
-//				if(cell)
-				
 
 				if(row > 0) {
 					BoardCell closeCell = this.getCell(row - 1, col);
@@ -261,7 +256,6 @@ public class Board {
 
 			}
 		}
-		System.out.println("lol");
 		return;
 	}
 	public static Board getInstance() {
@@ -271,17 +265,37 @@ public class Board {
 	 * calcTargets: calculates legal targets for a move from startCell of length pathlength.
 	 * 
 	 */
-
+	
 	public void calcTargets( BoardCell startCell, int pathlength) {
+		
+		targets.clear();
+		targetCalc(startCell, pathlength);
 		return;
 	}
-
+	
 	/** 
 	 * targetCalc: calculates legal targets for a move from startCell of length pathlength.
 	 * 
 	 */
 	private void targetCalc(BoardCell startCell, int pathlength) {
-		return;
+	    if (pathlength == 0) {
+	        targets.add(startCell);
+	        return;
+	    }
+	    
+	    visited.add(startCell); 
+	    
+	    for (BoardCell cell : startCell.getAdjList()) {
+	        if (!visited.contains(cell)&& !cell.isOccupied()) {
+	            if (cell.getInitial() != 'W') {
+	                targets.add(cell);
+	            } else {
+	                targetCalc(cell, pathlength - 1);
+	            }
+	        }
+	    }
+	    
+	    visited.remove(startCell);
 	}
 	/** 
 	 *  getCell: returns the cell from the board at row, col.
