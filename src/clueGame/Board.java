@@ -266,17 +266,11 @@ public class Board {
 	 * 
 	 */
 	
-	public void calcTargets( BoardCell startCell, int pathlength) {
-		
-		targets.clear();
-		targetCalc(startCell, pathlength);
-		return;
+	public void calcTargets(BoardCell startCell, int pathlength) {
+	    targets.clear();
+	    targetCalc(startCell, pathlength);
 	}
-	
-	/** 
-	 * targetCalc: calculates legal targets for a move from startCell of length pathlength.
-	 * 
-	 */
+
 	private void targetCalc(BoardCell startCell, int pathlength) {
 	    if (pathlength == 0) {
 	        targets.add(startCell);
@@ -285,13 +279,17 @@ public class Board {
 	    
 	    visited.add(startCell); 
 	    
-	    for (BoardCell cell : startCell.getAdjList()) {
-	        if (!visited.contains(cell)&& !cell.isOccupied()) {
+	    for (BoardCell cell : startCell.getAdjList()) {	
+	        if (!visited.contains(cell) && !cell.isOccupied()) {
 	            if (cell.getInitial() != 'W') {
 	                targets.add(cell);
-	            } else {
+	            } 
+	            else {
 	                targetCalc(cell, pathlength - 1);
 	            }
+	        }
+	        if (!visited.contains(cell) && cell.isOccupied() && cell.isRoomCenter()) {
+	        	targets.add(cell);
 	        }
 	    }
 	    
