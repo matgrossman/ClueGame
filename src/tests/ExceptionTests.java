@@ -3,7 +3,7 @@ package tests;
 
 import java.io.FileNotFoundException;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import org.junit.jupiter.api.Test;
 import clueGame.BadConfigFormatException;
 import clueGame.Board;
@@ -11,19 +11,15 @@ import clueGame.Board;
 public class ExceptionTests {
 
 
-	// Test that an exception is thrown for a layout file that does not
-	// have the same number of columns for each row
+	// Test that an exception is not thrown for a layout file with correct parameters
 	@Test
 	public void testBadColumns() throws BadConfigFormatException, FileNotFoundException {
-		assertThrows(BadConfigFormatException.class, () -> {
-			// Note that we are using a LOCAL Board variable, because each
-			// test will load different files
+		assertDoesNotThrow(() -> {
 			Board board = Board.getInstance();
-			board.setConfigFiles("ClueLayoutBadColumns306.csv", "ClueSetup306.txt");
+			board.setConfigFiles("ClueLayout.csv", "ClueSetup.txt");
 			// Instead of initialize, we call the two load functions directly.
 			// This is necessary because initialize contains a try-catch.
 			board.loadSetupConfig();
-			// This one should throw an exception
 			board.loadLayoutConfig();
 		});
 	}

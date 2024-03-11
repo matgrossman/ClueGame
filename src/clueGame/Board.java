@@ -89,8 +89,6 @@ public class Board {
 	 */
 	public void loadLayoutConfig() throws BadConfigFormatException, FileNotFoundException{
 		//			Get rows, cols values
-
-
 		FileReader reader = new FileReader("data/" + layoutConfigFile);
 		Scanner rowCount = new Scanner(reader);
 		int row = 0;

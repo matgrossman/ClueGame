@@ -6,6 +6,8 @@ package clueGame;
 import java.io.PrintWriter;
 
 public class BadConfigFormatException extends Exception {
+	
+	
 
 	public BadConfigFormatException() {
 		super("Error: Error in config files.");
