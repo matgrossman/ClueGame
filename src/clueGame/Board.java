@@ -11,8 +11,6 @@ import java.util.Set;
 import java.util.Map;
 import java.util.Scanner;
 
-import clueGame.BoardCell;
-import experiment.TestBoardCell;
 
 
 public class Board {
