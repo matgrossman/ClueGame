@@ -25,6 +25,8 @@ public class Board {
 	private int numRows;
 
 	private Map<Character, Room> roomMap;
+	
+	final static String dataFolder = "data/";
 
 	/*
 	 * variable and methods used for singleton pattern
@@ -47,7 +49,7 @@ public class Board {
 			this.loadLayoutConfig();
 			this.calcAdj();
 		} catch (Exception e) {
-			System.out.println(e.getMessage());;
+			System.out.println(e.getMessage());
 			e.printStackTrace();
 		}
 
@@ -57,7 +59,7 @@ public class Board {
 	 * loadSetupConfig: Loads in expected rooms from setup.txt file
 	 */
 	public void loadSetupConfig() throws BadConfigFormatException, FileNotFoundException {
-		FileReader reader = new FileReader("data/" + setupConfigFile);
+		FileReader reader = new FileReader(dataFolder + setupConfigFile);
 		Scanner in  = new Scanner(reader);
 
 		while(in.hasNextLine()) {
@@ -87,7 +89,7 @@ public class Board {
 	 */
 	public void loadLayoutConfig() throws BadConfigFormatException, FileNotFoundException{
 		//			Get rows, cols values
-		FileReader reader = new FileReader("data/" + layoutConfigFile);
+		FileReader reader = new FileReader(dataFolder + layoutConfigFile);
 		Scanner rowCount = new Scanner(reader);
 		int row = 0;
 		int col = 0;
@@ -103,7 +105,7 @@ public class Board {
 		col = 0;
 		grid = new BoardCell[numRows][numCols];
 
-		FileReader read2 = new FileReader("data/" + layoutConfigFile);
+		FileReader read2 = new FileReader(dataFolder + layoutConfigFile);
 		Scanner in = new Scanner(read2);
 
 		while(in.hasNextLine()) {
@@ -184,9 +186,9 @@ public class Board {
 				}
 
 				if(cell.getDoorDirection() != DoorDirection.NONE) {
-					BoardCell roomCell = new BoardCell();
-					Room doorRoom = new Room();
-					BoardCell centerCell = new BoardCell();
+					BoardCell roomCell;
+					Room doorRoom;
+					BoardCell centerCell;
 
 					switch(cell.getDoorDirection()) {
 					case UP:
@@ -221,7 +223,10 @@ public class Board {
 						cell.addAdjacency(centerCell);
 						centerCell.addAdjacency(cell);
 						break;
+					default:
+						break;
 					}
+					
 
 				}
 
