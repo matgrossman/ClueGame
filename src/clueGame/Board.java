@@ -25,6 +25,11 @@ public class Board {
 	private int numRows;
 
 	private Map<Character, Room> roomMap;
+	private Solution theAnswer;
+	
+	private Player[] players = new Player[6];
+	
+	private Card[] deck = new Card[21];		
 	
 	final static String dataFolder = "data/";
 

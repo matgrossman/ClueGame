@@ -8,6 +8,8 @@ public abstract class Player {
 	private int row;
 	private int column;
 	
+	private Card[] hand;	
+	
 	public void updateHand(Card card) {
 		return;
 	}
