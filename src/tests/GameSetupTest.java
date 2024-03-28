@@ -75,7 +75,7 @@ public class GameSetupTest {
 		assertTrue(players[3].getClass() == ComputerPlayer.class);
 	}
 	@Test
-	public void weaponSetup() {
+	public void deckSetup() {
 		Stack<Card> deck = board.getDeck();
 		
 		Card needle = new Card(CardType.WEAPON, "Needle");
@@ -93,6 +93,47 @@ public class GameSetupTest {
 		assertTrue(deck.contains(glove));
 		
 
+//		Test Rooms
+		Card classroom = new Card(CardType.ROOM, "Classroom");
+		Card office = new Card(CardType.ROOM, "Office");
+		Card labratory = new Card(CardType.ROOM, "Labratory");
+		Card storage = new Card(CardType.ROOM, "Storage");
+		Card machineShop = new Card(CardType.ROOM, "Machine Shop");
+		Card computerLab = new Card(CardType.ROOM, "Computer Lab");
+		Card coffeeShop = new Card(CardType.ROOM, "Coffee Shop");
+		Card lectureHall = new Card(CardType.ROOM, "Lecture Hall");
+		Card gameRoom = new Card(CardType.ROOM, "Game Room");
+		
+		assertTrue(deck.contains(classroom));
+		assertTrue(deck.contains(office));
+		assertTrue(deck.contains(labratory));
+		assertTrue(deck.contains(storage));
+		assertTrue(deck.contains(machineShop));
+		assertTrue(deck.contains(computerLab));
+		assertTrue(deck.contains(coffeeShop));
+		assertTrue(deck.contains(lectureHall));
+		assertTrue(deck.contains(gameRoom));
+		
+		
+		Card dray = new Card(CardType.PERSON, "Draymond Green");
+		Card patty = new Card(CardType.PERSON, "Patrick Mahomes");
+		Card jj = new Card(CardType.PERSON, "Justin Jefferson");
+		Card allen = new Card(CardType.PERSON, "Josh Allen");
+		Card brr = new Card(CardType.PERSON, "Joe Brrr");
+		Card letsRide = new Card(CardType.PERSON, "Russell Wilson");
+		
+		assertTrue(deck.contains(dray));
+		assertTrue(deck.contains(patty));
+		assertTrue(deck.contains(jj));
+		assertTrue(deck.contains(allen));
+		assertTrue(deck.contains(brr));
+		assertTrue(deck.contains(letsRide));
+
+		
+
+
 	}
+	
+
 	
 }
