@@ -10,6 +10,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.Set;
+import java.util.Stack;
 
 
 
@@ -29,7 +30,7 @@ public class Board {
 	
 	private Player[] players = new Player[6];
 	
-	private Card[] deck = new Card[21];		
+	private Stack<Card> deck = new Stack<Card>();		
 	
 	final static String dataFolder = "data/";
 
@@ -103,7 +104,8 @@ public class Board {
 				
 			}
 			else if(roomInfo[0].equals("Weapon")) {
-				continue;
+				String name = roomInfo[1].trim();
+				deck.add(new Card(CardType.WEAPON, name));
 			}
 			else {
 				throw new BadConfigFormatException("Formatting Error in " + setupConfigFile);
@@ -113,6 +115,12 @@ public class Board {
 	}
 
 
+	public Solution getTheAnswer() {
+		return theAnswer;
+	}
+	public Stack<Card> getDeck() {
+		return deck;
+	}
 	/*
 	 * loadLayoutConfig: Loads layout csv file and checks against setup file
 	 */

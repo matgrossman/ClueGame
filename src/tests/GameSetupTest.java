@@ -5,12 +5,17 @@ import static org.junit.Assert.assertTrue;
 
 import java.awt.Color;
 import java.util.Set;
+import java.util.Stack;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import clueGame.Board;
 import clueGame.BoardCell;
+import clueGame.Card;
+import clueGame.CardType;
+import clueGame.ComputerPlayer;
+import clueGame.HumanPlayer;
 import clueGame.Player;
 public class GameSetupTest {
 	private static Board board;
@@ -66,7 +71,28 @@ public class GameSetupTest {
 		assertTrue(players[5].getCol() == 20);
 		
 		
+		assertTrue(players[0].getClass() == HumanPlayer.class);
+		assertTrue(players[3].getClass() == ComputerPlayer.class);
+	}
+	@Test
+	public void weaponSetup() {
+		Stack<Card> deck = board.getDeck();
 		
+		Card needle = new Card(CardType.WEAPON, "Needle");
+		Card spoon = new Card(CardType.WEAPON, "Spoon");
+		Card football = new Card(CardType.WEAPON, "Football");
+		Card book = new Card(CardType.WEAPON, "Book");
+		Card chain = new Card(CardType.WEAPON, "Chain");
+		Card glove = new Card(CardType.WEAPON, "Glove");
+
+		assertTrue(deck.contains(needle));
+		assertTrue(deck.contains(spoon));
+		assertTrue(deck.contains(book));
+		assertTrue(deck.contains(football));
+		assertTrue(deck.contains(chain));
+		assertTrue(deck.contains(glove));
+		
+
 	}
 	
 }
