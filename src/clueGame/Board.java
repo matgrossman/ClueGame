@@ -85,6 +85,11 @@ public class Board {
 				r.setName(roomInfo[1].trim());
 				char label = roomInfo[2].trim().charAt(0);
 				roomMap.put(label, r);
+				
+//				Create card
+				if(roomInfo[0].equals("Room")) {
+					deck.add(new Card(CardType.ROOM, roomInfo[1].trim()));
+				}
 			}
 			else if(roomInfo[0].equals("Player")){
 				String name = roomInfo[1].trim();
@@ -100,6 +105,8 @@ public class Board {
 					ComputerPlayer cpu = new ComputerPlayer(name, color, row, col);
 					players[playerCtr] = cpu;
 				}
+				
+				deck.add(new Card(CardType.PERSON, name));
 				playerCtr++;
 				
 			}
