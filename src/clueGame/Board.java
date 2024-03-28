@@ -69,7 +69,8 @@ public class Board {
 	public void loadSetupConfig() throws BadConfigFormatException, FileNotFoundException {
 		FileReader reader = new FileReader(dataFolder + setupConfigFile);
 		Scanner in  = new Scanner(reader);
-
+		int playerCtr = 0;
+		
 		while(in.hasNextLine()) {
 			String nextLine = in.nextLine();
 			if(nextLine.contains("//") || nextLine.isBlank()) {
@@ -83,6 +84,26 @@ public class Board {
 				r.setName(roomInfo[1].trim());
 				char label = roomInfo[2].trim().charAt(0);
 				roomMap.put(label, r);
+			}
+			else if(roomInfo[0].equals("Player")){
+				String name = roomInfo[1].trim();
+				String color = roomInfo[2].trim();
+				int row = Integer.parseInt(roomInfo[3].trim());
+				int col = Integer.parseInt(roomInfo[4].trim());
+				
+				if(playerCtr == 0) {
+					HumanPlayer human = new HumanPlayer(name, color, row, col);
+					players[playerCtr] = human;
+				}
+				else {
+					ComputerPlayer cpu = new ComputerPlayer(name, color, row, col);
+					players[playerCtr] = cpu;
+				}
+				playerCtr++;
+				
+			}
+			else if(roomInfo[0].equals("Weapon")) {
+				continue;
 			}
 			else {
 				throw new BadConfigFormatException("Formatting Error in " + setupConfigFile);

@@ -11,4 +11,19 @@ Room, Game Room, G
 // other spaces on board
 Space, Unused, X
 Space, Walkway, W
+// Players
+Player, Draymond Green, Green, 0, 6
+Player, Patrick Mahomes, Red, 19, 0
+Player, Justin Jefferson, Purple, 27, 7
+Player, Josh Allen, Blue, 27, 18
+Player, Joe Brrr, Orange, 23, 24
+Player, Russell Wilson, Yellow, 0, 20
+// Weapons
+Weapon, Needle
+Weapon, Spoon
+Weapon, Football
+Weapon, Book
+Weapon, Chain
+Weapon, Glove
+
 

@@ -31,20 +31,20 @@ public class GameSetupTest {
 		Player[] players = board.getPlayers();
 		
 //		Test Player names
-		assertTrue(players[0].getName() == "Draymond Green");
-		assertTrue(players[1].getName() == "Patrick Mahomes");
-		assertTrue(players[2].getName() == "Justin Jefferson");
-		assertTrue(players[3].getName() == "Josh Allen");
-		assertTrue(players[4].getName() == "Joe Brrr");
-		assertTrue(players[5].getName() == "Russell Wilson");
+		assertTrue(players[0].getName().equals("Draymond Green"));
+		assertTrue(players[1].getName().equals("Patrick Mahomes"));
+		assertTrue(players[2].getName().equals("Justin Jefferson"));
+		assertTrue(players[3].getName().equals("Josh Allen"));
+		assertTrue(players[4].getName().equals("Joe Brrr"));
+		assertTrue(players[5].getName().equals("Russell Wilson"));
 		
 //		Test Player colors
-		assertTrue(players[0].getColor() == "Green");
-		assertTrue(players[1].getColor() == "Red");
-		assertTrue(players[2].getColor() == "Purple");
-		assertTrue(players[3].getColor() == "Blue");
-		assertTrue(players[4].getColor() == "Orange");
-		assertTrue(players[5].getColor() == "Yellow");
+		assertTrue(players[0].getColor().equals("Green"));
+		assertTrue(players[1].getColor().equals("Red"));
+		assertTrue(players[2].getColor().equals("Purple"));
+		assertTrue(players[3].getColor().equals("Blue"));
+		assertTrue(players[4].getColor().equals("Orange"));
+		assertTrue(players[5].getColor().equals("Yellow"));
 		
 //		Test Player Locations
 		assertTrue(players[0].getRow() == 0);
