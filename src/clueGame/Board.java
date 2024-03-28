@@ -38,6 +38,9 @@ public class Board {
 	 */
 	private static Board Instance = new Board();
 
+	public Player[] getPlayers() {
+		return players;
+	}
 	private Board() {
 		super();
 		targets = new HashSet<BoardCell>();
