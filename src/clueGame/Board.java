@@ -33,7 +33,7 @@ public class Board {
 	
 	private Player[] players = new Player[6];
 	
-	private ArrayList<Card> deck = new ArrayList<Card>();		
+	private ArrayList<Card> deck;	
 	
 	final static String dataFolder = "data/";
 
@@ -50,6 +50,7 @@ public class Board {
 		targets = new HashSet<BoardCell>();
 		visited = new HashSet<BoardCell>();
 		roomMap = new HashMap<Character, Room>();
+		deck = new ArrayList<Card>();
 	}
 	/*
 	 * initialize the board (since we are using singleton pattern)
@@ -108,7 +109,7 @@ public class Board {
 					ComputerPlayer cpu = new ComputerPlayer(name, color, row, col);
 					players[playerCtr] = cpu;
 				}
-				
+	
 				deck.add(new Card(CardType.PERSON, name));
 				playerCtr++;
 				
