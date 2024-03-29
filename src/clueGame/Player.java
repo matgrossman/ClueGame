@@ -1,5 +1,6 @@
 package clueGame;
 
+import java.util.ArrayList;
 
 public abstract class Player {
 	private String name;
@@ -7,7 +8,7 @@ public abstract class Player {
 	private int row;
 	private int col;
 	
-	private Card[] hand;	
+	private ArrayList<Card> hand = new ArrayList<Card>();	
 	
 	public Player(String name, String color, int row, int col) {
 		this.name = name;
@@ -25,8 +26,6 @@ public abstract class Player {
 		return color;
 	}
 
-
-
 	public int getRow() {
 		return row;
 	}
@@ -43,11 +42,11 @@ public abstract class Player {
 		this.col = col;
 	}
 
-	public Card[] getHand() {
+	public ArrayList<Card> getHand() {
 		return hand;
 	}
 
-	public void setHand(Card[] hand) {
+	public void setHand(ArrayList<Card> hand) {
 		this.hand = hand;
 	}
 

@@ -1,1 +1,1 @@
-Error: Column count not consistent. Double Check ClueLayoutBadColumns306.csv
+Formatting Error in ClueSetupBadFormat306.txt

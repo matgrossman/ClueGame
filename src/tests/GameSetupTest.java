@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.awt.Color;
+import java.util.ArrayList;
 import java.util.Set;
 import java.util.Stack;
 
@@ -17,6 +18,7 @@ import clueGame.CardType;
 import clueGame.ComputerPlayer;
 import clueGame.HumanPlayer;
 import clueGame.Player;
+import clueGame.Solution;
 public class GameSetupTest {
 	private static Board board;
 	
@@ -76,7 +78,7 @@ public class GameSetupTest {
 	}
 	@Test
 	public void deckSetup() {
-		Stack<Card> deck = board.getDeck();
+		ArrayList<Card> deck = board.getDeck();
 		
 		Card needle = new Card(CardType.WEAPON, "Needle");
 		Card spoon = new Card(CardType.WEAPON, "Spoon");
@@ -129,11 +131,29 @@ public class GameSetupTest {
 		assertTrue(deck.contains(brr));
 		assertTrue(deck.contains(letsRide));
 
+
+	}
+	@Test
+	public void dealCards() {
+		ArrayList<Card> deck = board.getDeck();
+		board.deal();
+		Player[] players = board.getPlayers();
+		Solution answer = board.getTheAnswer();
 		
-
-
+		assertTrue(answer.getPerson().getCardType() == CardType.PERSON);
+		assertTrue(answer.getRoom().getCardType() == CardType.ROOM);
+		assertTrue(answer.getWeapon().getCardType() == CardType.WEAPON);
+		
+		
+		assertTrue(players[0].getHand().size()== 3);
+		assertTrue(players[1].getHand().size() == 3);
+		assertTrue(players[2].getHand().size() == 3);
+		assertTrue(players[3].getHand().size() == 3);
+		assertTrue(players[4].getHand().size() == 3);
+		assertTrue(players[5].getHand().size() == 3);
+		assertTrue(deck.size() == 0);
+		
 	}
 	
 
-	
 }

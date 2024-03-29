@@ -5,9 +5,12 @@ package clueGame;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Random;
 import java.util.Scanner;
 import java.util.Set;
 import java.util.Stack;
@@ -30,7 +33,7 @@ public class Board {
 	
 	private Player[] players = new Player[6];
 	
-	private Stack<Card> deck = new Stack<Card>();		
+	private ArrayList<Card> deck = new ArrayList<Card>();		
 	
 	final static String dataFolder = "data/";
 
@@ -125,7 +128,7 @@ public class Board {
 	public Solution getTheAnswer() {
 		return theAnswer;
 	}
-	public Stack<Card> getDeck() {
+	public ArrayList<Card> getDeck() {
 		return deck;
 	}
 	/*
@@ -340,6 +343,58 @@ public class Board {
 	    
 	    visited.remove(startCell);
 	}
+	
+	public void deal(){
+		Collections.shuffle(deck);
+		dealSolution();
+		dealPlayers();
+	}
+	
+	public void dealSolution() {
+		Card roomCard = null;
+		Card personCard = null;
+		Card weaponCard = null;
+		
+		int cardCount = 0;
+		while (roomCard == null || personCard == null || weaponCard == null) {
+			if(roomCard == null && deck.get(cardCount).getCardType().equals(CardType.ROOM)) {
+				roomCard = deck.get(cardCount);
+				deck.remove(cardCount);
+				cardCount = 0;
+			}
+			else if(personCard == null && deck.get(cardCount).getCardType().equals(CardType.PERSON)) {
+				personCard = deck.get(cardCount);
+				deck.remove(cardCount);
+				cardCount = 0;
+			}
+			else if(weaponCard == null && deck.get(cardCount).getCardType().equals(CardType.WEAPON)) {
+				weaponCard = deck.get(cardCount);
+				deck.remove(cardCount);
+				cardCount = 0;
+			}
+			else {
+				cardCount ++;
+			}
+		}
+		theAnswer = new Solution(roomCard,personCard,weaponCard);
+		return;
+	}
+	
+	public void dealPlayers() {
+		int playerCount = 0;
+		while (deck.size() > 0) {
+			players[playerCount].getHand().add(deck.get(0));
+			deck.remove(0);
+			playerCount++;
+			if (playerCount >= players.length) {
+				playerCount = 0;
+			}
+		}
+		return;
+	}
+		
+		
+		
 	/** 
 	 *  getCell: returns the cell from the board at row, col.
 	 * 
