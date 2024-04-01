@@ -394,8 +394,13 @@ public class Board {
 		return;
 	}
 		
-	public boolean checkAccusation() {
-		return false;
+	public boolean checkAccusation(Solution accusation) {
+		if(this.theAnswer.getPerson()==accusation.getPerson()&& this.theAnswer.getRoom()==accusation.getRoom()&& this.theAnswer.getWeapon()==accusation.getWeapon()) {
+			return true;
+		}
+		else {
+			return false;
+		}
 	}
 	
 	public Card handleSuggestion() {
@@ -443,6 +448,10 @@ public class Board {
 	public Set<BoardCell> getAdjList(int row, int col) {
 		Set <BoardCell> adjList = this.getCell(row, col).getAdjList();
 		return adjList;
+	}
+	
+	public void setTheAnswer(Solution theAnswer) {
+		this.theAnswer = theAnswer;
 	}
 
 
