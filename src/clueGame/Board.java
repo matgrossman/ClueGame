@@ -394,7 +394,13 @@ public class Board {
 		return;
 	}
 		
-		
+	public boolean checkAccusation() {
+		return false;
+	}
+	
+	public Card handleSuggestion() {
+		return deck.get(0);		//PLACEHOLDER
+	}
 		
 	/** 
 	 *  getCell: returns the cell from the board at row, col.

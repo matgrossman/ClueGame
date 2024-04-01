@@ -21,6 +21,14 @@ public abstract class Player {
 	public void updateHand(Card card) {
 		return;
 	}
+	
+	public void updateSeen(Card seenCard) {
+		return;
+	}
+	
+	public Card disproveSuggestion() {
+		return hand.get(0);		//TEMP placeholder
+	}
 
 	public String getColor() {
 		return color;
