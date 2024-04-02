@@ -72,8 +72,7 @@ public class ComputerAITest {
 			if (compPlayer.getSeenCards().contains(compSol.getPerson())) {
 				fail();
 			}
-		}
-		
+		}	
 	}
 	
 	@Test

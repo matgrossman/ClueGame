@@ -46,12 +46,10 @@ public class ComputerPlayer extends Player{
 	}
 	
 	public BoardCell selectTarget() {
+		
 		return new BoardCell();			//PLACEHOLDER
 	}
 
-	@Override
-	public Card disproveSuggestion(Solution suggestion) {
-		return null;
-	}
+
 
 }

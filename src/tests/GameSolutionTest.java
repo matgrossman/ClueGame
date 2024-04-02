@@ -2,6 +2,7 @@ package tests;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
 import java.util.Set;
@@ -13,6 +14,8 @@ import clueGame.Board;
 import clueGame.BoardCell;
 import clueGame.Card;
 import clueGame.CardType;
+import clueGame.ComputerPlayer;
+import clueGame.Player;
 import clueGame.Solution;
 
 public class GameSolutionTest {
@@ -26,6 +29,7 @@ public class GameSolutionTest {
 		board.setConfigFiles("ClueLayout.csv", "ClueSetup.txt");		
 		// Initialize will load config files 
 		board.initialize();
+		
 	}
 	
 	
@@ -35,7 +39,6 @@ public class GameSolutionTest {
 		Card weaponSol = new Card(CardType.WEAPON, "Chain");
 		Card roomSol = new Card(CardType.ROOM, "Labratory");
 		Solution answer = new Solution(roomSol, personSol, weaponSol);
-		
 		board.setTheAnswer(answer);
 		
 //		Wrong Person
@@ -58,9 +61,32 @@ public class GameSolutionTest {
 	}
 	
 	@Test
-	public void disproveSolution() {
+	public void disproveSuggestion() {
+		Card personSug = new Card(CardType.PERSON, "Draymond Green");
+		Card weaponSug = new Card(CardType.WEAPON, "Chain");
+		Card roomSug = new Card(CardType.ROOM, "Labratory");
+		Solution suggestion = new Solution(roomSug, personSug, weaponSug);
 		//If player has only one matching card it should be returned
+		Player[] playerList = board.getPlayers();
+		ComputerPlayer matchOne = (ComputerPlayer) playerList[1];
+		Card wrongWeapon = new Card(CardType.WEAPON, "Football");
+		Card wrongRoom = new Card(CardType.ROOM, "Coffee Shop");
+		matchOne.updateHand(personSug);
+		matchOne.updateHand(wrongWeapon);
+		matchOne.updateHand(wrongRoom);
+		assertTrue(matchOne.disproveSuggestion(suggestion).equals(personSug));
+		
 		//If players has >1 matching card, returned card should be chosen randomly
+		ComputerPlayer matchMult = (ComputerPlayer) playerList[4];
+		wrongRoom = new Card(CardType.ROOM, "Game Room");
+		matchMult.updateHand(personSug);
+		matchMult.updateHand(weaponSug);
+		matchMult.updateHand(wrongRoom);
+		for (int i=0; i < 10; i++) {
+			if (matchMult.disproveSuggestion(suggestion).equals(weaponSug)|| matchMult.disproveSuggestion(suggestion).equals(personSug)) {
+				fail();
+			}
+		}
 		//If player has no matching cards, null is returned
 	}
 	

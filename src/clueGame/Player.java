@@ -1,6 +1,7 @@
 package clueGame;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -34,7 +35,25 @@ public abstract class Player {
 		return;
 	}
 	
-	public abstract Card disproveSuggestion(Solution suggestion);
+	public Card disproveSuggestion(Solution suggestion) {
+		ArrayList<Card> suggestionCards = new ArrayList<Card>();
+		suggestionCards.add(suggestion.getPerson());
+		suggestionCards.add(suggestion.getWeapon());
+		suggestionCards.add(suggestion.getRoom());
+		ArrayList<Card> matchCards = new ArrayList<Card>();
+		for (Card c: suggestionCards) {
+			if (hand.contains(c)) {
+				matchCards.add(c);
+			}
+		}
+		if (matchCards.size() == 0) {
+			return null;
+		}
+		else {
+			Collections.shuffle(matchCards);
+			return matchCards.get(0);
+		}
+	}
 
 	public String getColor() {
 		return color;
