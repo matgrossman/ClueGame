@@ -83,18 +83,68 @@ public class GameSolutionTest {
 		matchMult.updateHand(weaponSug);
 		matchMult.updateHand(wrongRoom);
 		for (int i=0; i < 10; i++) {
-			if (matchMult.disproveSuggestion(suggestion).equals(weaponSug)|| matchMult.disproveSuggestion(suggestion).equals(personSug)) {
+			Card disprove = matchMult.disproveSuggestion(suggestion);
+			if (disprove.equals(null) || disprove.equals(wrongRoom)) {
 				fail();
 			}
 		}
 		//If player has no matching cards, null is returned
+		ComputerPlayer noMatch = (ComputerPlayer) playerList[3];
+		Card wrongPerson = new Card(CardType.PERSON, "Russell Wilson");
+		
+		noMatch.updateHand(wrongPerson);
+		noMatch.updateHand(wrongRoom);
+		noMatch.updateHand(wrongWeapon);
+		
+		assertEquals(noMatch.disproveSuggestion(suggestion), null);
 	}
 	
 	@Test
 	public void handleSuggestions() {
 //		Suggestion no one can disprove returns null
+//		board.deal();
+//		Solution answer = board.getTheAnswer();
+//		
+		Player[] players = board.getPlayers();
+		Card compRoom = new Card(CardType.ROOM, "Computer Lab");
+		Card football = new Card(CardType.WEAPON, "Football");
+		Card joebrr = new Card(CardType.PERSON, "Joe Brrr");
+		Card gameRoom = new Card(CardType.ROOM, "Game Room");
+		Card library = new Card(CardType.ROOM, "Library");
+		Card draymondGreen = new Card(CardType.PERSON, "Draymond Green");
+		Card needle = new Card(CardType.WEAPON, "Needle");
+		Card jj = new Card(CardType.PERSON, "Justin Jefferson");
+		Card chain = new Card(CardType.WEAPON, "Chain");
+		
+		Card russ = new Card(CardType.PERSON, "Russell Wilson");
+		Card machine = new Card(CardType.ROOM, "Machine Shop");
+		Card glove = new Card(CardType.WEAPON, "Glove");
+		
+		Solution suggestion = new Solution(machine, russ, glove);
+		
+		players[0].updateHand(compRoom);
+		players[0].updateHand(football);
+		players[0].updateHand(joebrr);
+		players[1].updateHand(gameRoom);
+		players[1].updateHand(draymondGreen);
+		players[1].updateHand(needle);
+		players[2].updateHand(jj);
+		players[2].updateHand(library);
+		players[2].updateHand(chain);
+
+		assertEquals(board.handleSuggestion(suggestion, players[0]), null);
+		
+		
+
 //		Suggestion only suggesting player can disprove returns null
+		
+		suggestion = new Solution(compRoom, joebrr, football);
+		assertEquals(board.handleSuggestion(suggestion, players[0]), null);
 //		Suggestion only human can disprove returns answer (i.e., card that disproves suggestion)
+		suggestion = new Solution(compRoom, draymondGreen, needle);
+		assertEquals(board.handleSuggestion(suggestion, players[1]), compRoom);
 //		Suggestion that two players can disprove, correct player (based on starting with next player in list) returns answer
+		suggestion = new Solution(gameRoom, jj, glove);
+		assertEquals(board.handleSuggestion(suggestion, players[0]), gameRoom);
 	}
 }

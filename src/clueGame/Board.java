@@ -402,8 +402,27 @@ public class Board {
 		}
 	}
 	
-	public Card handleSuggestion() {
-		return deck.get(0);		//PLACEHOLDER
+	public Card handleSuggestion(Solution suggestion, Player suggester) {
+		
+		int idx = 0;
+		for(int i = 0; i < players.length; i++) {
+			if(suggester == players[i]) {
+				idx = i + 1;
+			}
+		}
+		
+		while(players[idx] != suggester) {
+			
+			Card disprove = players[idx].disproveSuggestion(suggestion);
+			if(disprove == null) {
+				idx++;
+				idx = idx % players.length;
+				continue;
+			}
+			else return disprove;
+			
+		}
+		return null;		//PLACEHOLDER
 	}
 		
 	/** 
