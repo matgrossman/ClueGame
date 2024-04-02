@@ -502,6 +502,14 @@ public class Board {
 		return peopleCards;
 	}
 
+	public Card getCard(String cardName) {
+		for(Card c : deck) {
+			if(c.getCardName() == cardName) {
+				return c;
+			}
+		}
+		return null;
+	}
 
 
 }

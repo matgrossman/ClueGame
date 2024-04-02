@@ -2,6 +2,8 @@ package clueGame;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Random;
+import java.util.Set;
 
 public class ComputerPlayer extends Player{
 
@@ -45,9 +47,25 @@ public class ComputerPlayer extends Player{
 		return new Solution(roomCard, person, weapon);
 	}
 	
-	public BoardCell selectTarget() {
+	public BoardCell selectTarget(Set<BoardCell> targets) {
+		Board board = Board.getInstance();
+		for(BoardCell cell : targets) {
+			if(cell.isRoomCenter()) {
+				Card roomCard = board.getCard(board.getRoom(cell).getName());
+				if(super.getSeenCards().contains(roomCard)) {
+					continue;
+				}
+				else {
+					return cell;
+				}
+			}
+		}
+		BoardCell[] cells = targets.toArray(new BoardCell[0]);
 		
-		return new BoardCell();			//PLACEHOLDER
+		Random rng = new Random();
+		int randIdx = rng.nextInt(cells.length);
+		
+		return cells[randIdx];
 	}
 
 
