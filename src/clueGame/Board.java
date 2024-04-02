@@ -360,17 +360,14 @@ public class Board {
 		while (roomCard == null || personCard == null || weaponCard == null) {
 			if(roomCard == null && deck.get(cardCount).getCardType().equals(CardType.ROOM)) {
 				roomCard = deck.get(cardCount);
-				deck.remove(cardCount);
 				cardCount = 0;
 			}
 			else if(personCard == null && deck.get(cardCount).getCardType().equals(CardType.PERSON)) {
 				personCard = deck.get(cardCount);
-				deck.remove(cardCount);
 				cardCount = 0;
 			}
 			else if(weaponCard == null && deck.get(cardCount).getCardType().equals(CardType.WEAPON)) {
 				weaponCard = deck.get(cardCount);
-				deck.remove(cardCount);
 				cardCount = 0;
 			}
 			else {
@@ -383,9 +380,11 @@ public class Board {
 	
 	public void dealPlayers() {
 		int playerCount = 0;
-		while (deck.size() > 0) {
-			players[playerCount].getHand().add(deck.get(0));
-			deck.remove(0);
+		for (Card c: deck) {
+			if (theAnswer.contains(c)==true) {
+				continue;
+			}
+			players[playerCount].updateHand(c);
 			playerCount++;
 			if (playerCount >= players.length) {
 				playerCount = 0;
@@ -452,6 +451,36 @@ public class Board {
 	
 	public void setTheAnswer(Solution theAnswer) {
 		this.theAnswer = theAnswer;
+	}
+	
+	public ArrayList<Card> getWeaponCards(){
+		ArrayList<Card> weaponCards = new ArrayList<Card>();
+		for(Card card: deck) {
+			if(card.getCardType()==CardType.WEAPON) {
+				weaponCards.add(card);
+			}
+		}
+		return weaponCards;
+	}
+	
+	public ArrayList<Card> getRoomCards(){
+		ArrayList<Card> roomCards = new ArrayList<Card>();
+		for(Card card: deck) {
+			if(card.getCardType()==CardType.ROOM) {
+				roomCards.add(card);
+			}
+		}
+		return roomCards;
+	}
+	
+	public ArrayList<Card> getPeopleCards(){
+		ArrayList<Card> peopleCards = new ArrayList<Card>();
+		for(Card card: deck) {
+			if(card.getCardType()==CardType.PERSON) {
+				peopleCards.add(card);
+			}
+		}
+		return peopleCards;
 	}
 
 

@@ -23,6 +23,15 @@ public class Solution {
 	public Card getWeapon() {
 		return weapon;
 	}
+	
+	public boolean contains(Card c) {
+		if (c.equals(room)|| c.equals(person)|| c.equals(weapon)) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
 
 }
 

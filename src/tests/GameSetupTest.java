@@ -151,7 +151,6 @@ public class GameSetupTest {
 		assertTrue(players[3].getHand().size() == 3);
 		assertTrue(players[4].getHand().size() == 3);
 		assertTrue(players[5].getHand().size() == 3);
-		assertTrue(deck.size() == 0);
 		
 	}
 	

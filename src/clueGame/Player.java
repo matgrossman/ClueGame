@@ -1,6 +1,8 @@
 package clueGame;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 public abstract class Player {
 	private String name;
@@ -8,27 +10,31 @@ public abstract class Player {
 	private int row;
 	private int col;
 	
-	private ArrayList<Card> hand = new ArrayList<Card>();	
+	private ArrayList<Card> hand = new ArrayList<Card>();
+	
+	private Set<Card> seenCards;
 	
 	public Player(String name, String color, int row, int col) {
 		this.name = name;
 		this.color = color;
 		this.row = row;
 		this.col = col;
+		seenCards = new HashSet<Card>();
 	}
 	
-//	Getters for testing purposes
+
+	//	Getters for testing purposes
 	public void updateHand(Card card) {
+		hand.add(card);
 		return;
 	}
 	
 	public void updateSeen(Card seenCard) {
+		seenCards.add(seenCard);
 		return;
 	}
 	
-	public Card disproveSuggestion() {
-		return hand.get(0);		//TEMP placeholder
-	}
+	public abstract Card disproveSuggestion(Solution suggestion);
 
 	public String getColor() {
 		return color;
@@ -60,6 +66,10 @@ public abstract class Player {
 
 	public String getName() {
 		return name;
+	}
+
+	public Set<Card> getSeenCards() {
+		return seenCards;
 	}
 
 }

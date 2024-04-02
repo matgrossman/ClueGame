@@ -2,14 +2,16 @@ package tests;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
+import java.util.ArrayList;
 import java.util.Set;
+
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import clueGame.Board;
-import clueGame.BoardCell;
+import clueGame.*;
 
 public class ComputerAITest {
 	
@@ -28,9 +30,50 @@ public class ComputerAITest {
 	@Test
 	public void createSuggestion() {
 //		One weapon unseen
-//		Multiple weapons unseen
+		Player[] playerList = board.getPlayers();
+		ComputerPlayer compPlayer = (ComputerPlayer) playerList[1];
+		ArrayList <Card> weapons  = board.getWeaponCards();
+		for(int i=1; i < weapons.size(); i++) {
+			compPlayer.updateSeen(weapons.get(i));
+		}
+		Room occupied = board.getRoom('M');
+		Solution compSol = compPlayer.createSuggestion(occupied);
+		
+		assertTrue(compSol.getWeapon()== weapons.get(0));
+		
 //		One person unseen
+		ArrayList <Card> people  = board.getPeopleCards();
+		for(int i=1; i < people.size(); i++) {
+			compPlayer.updateSeen(people.get(i));
+		}
+		occupied = board.getRoom('S');
+		compSol = compPlayer.createSuggestion(occupied);
+		
+		assertTrue(compSol.getPerson()== people.get(0));
+		
+//		Multiple weapons unseen
+		compPlayer = (ComputerPlayer) playerList[2];
+		for(int i=3; i < weapons.size(); i++) {
+			compPlayer.updateSeen(weapons.get(i));
+		}
+		for(int i = 0; i < 10;i++) {
+			compSol = compPlayer.createSuggestion(occupied);
+			if (compPlayer.getSeenCards().contains(compSol.getWeapon())) {
+				fail();
+			}
+		}	
+		
 //		Multiple people unseen
+		for(int i=3; i < people.size(); i++) {
+			compPlayer.updateSeen(people.get(i));
+		}
+		for(int i = 0; i < 10;i++) {
+			compSol = compPlayer.createSuggestion(occupied);
+			if (compPlayer.getSeenCards().contains(compSol.getPerson())) {
+				fail();
+			}
+		}
+		
 	}
 	
 	@Test
