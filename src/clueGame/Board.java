@@ -56,7 +56,7 @@ public class Board {
 	 * initialize the board (since we are using singleton pattern)
 	 */
 	public void initialize()  {
-
+		this.clear();
 		try {
 			this.loadSetupConfig();
 			this.loadLayoutConfig();
@@ -72,6 +72,9 @@ public class Board {
 	 * loadSetupConfig: Loads in expected rooms from setup.txt file
 	 */
 	public void loadSetupConfig() throws BadConfigFormatException, FileNotFoundException {
+		
+		this.clear(); //clears roomMap and deck
+		
 		FileReader reader = new FileReader(dataFolder + setupConfigFile);
 		Scanner in  = new Scanner(reader);
 		int playerCtr = 0;
@@ -126,12 +129,7 @@ public class Board {
 	}
 
 
-	public Solution getTheAnswer() {
-		return theAnswer;
-	}
-	public ArrayList<Card> getDeck() {
-		return deck;
-	}
+
 	/*
 	 * loadLayoutConfig: Loads layout csv file and checks against setup file
 	 */
@@ -511,5 +509,15 @@ public class Board {
 		return null;
 	}
 
+	public Solution getTheAnswer() {
+		return theAnswer;
+	}
+	public ArrayList<Card> getDeck() {
+		return deck;
+	}
+	private void clear() {
+		roomMap.clear();
+		deck.clear();
+	}
 
 }
