@@ -14,6 +14,7 @@ import org.junit.jupiter.api.Test;
 
 import clueGame.*;
 
+
 public class ComputerAITest {
 
 	public static Board board;
