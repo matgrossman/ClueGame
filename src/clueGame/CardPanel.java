@@ -1,3 +1,7 @@
+/*
+ * CardPanel: GUI for showing user information about cards seen and in hand
+ * Authors: Mathew Grossman, Julian Reyes
+ */
 package clueGame;
 import java.awt.Color;
 import java.awt.GridLayout;
@@ -22,20 +26,23 @@ public class CardPanel extends JPanel{
 	private JPanel weaponPanel;
 	private Board board = Board.getInstance();
 	private HumanPlayer player;
-	private JLabel handLabel;
-	private JLabel seenLabel;
-	
-	
+
+
+
 	ArrayList<Card> hand;
 	Set<Card> seen;
-	
+
 	public CardPanel() {
+
+		//		Initialize instance variables
 		personPanel = new JPanel();
 		roomPanel = new JPanel();
 		weaponPanel = new JPanel();
 		player = (HumanPlayer) board.getPlayers()[0];
-		handLabel = new JLabel("In Hand:");
-		seenLabel = new JLabel("Seen:");
+
+
+		//		Set Borders for panels
+		this.setBorder(BorderFactory.createTitledBorder("Known Cards:"));
 		personPanel.setBorder(BorderFactory.createTitledBorder("People Cards"));
 		roomPanel.setBorder(BorderFactory.createTitledBorder("Room Cards"));
 		weaponPanel.setBorder(BorderFactory.createTitledBorder("Weapon Cards"));
@@ -46,14 +53,14 @@ public class CardPanel extends JPanel{
 		personPanel.setLayout(new GridLayout(0,1));
 		weaponPanel.setLayout(new GridLayout(0,1));
 		roomPanel.setLayout(new GridLayout(0,1));
-//		
-		
+		//		
+
 		this.setName("Cards Known:");
 
 		this.updatePanels();
 
-		
-		
+
+
 	}
 	public void updatePanels() {
 		hand = player.getHand();
@@ -63,12 +70,16 @@ public class CardPanel extends JPanel{
 		this.updatePanel(weaponPanel, CardType.WEAPON);
 		revalidate();
 	}
-	
+
+	/*
+	 * Update Panel: Updates the current panel with correct card types, then adds to
+	 * main panel
+	 */
 	public void updatePanel(JPanel panel, CardType cardType) {
 		panel.removeAll();
 		panel.add(new JLabel("In Hand:"));
 
-		
+
 		for(Card c : hand) {
 			if(c.getCardType() == cardType) {
 				JTextField cardField = new JTextField(c.getCardName());
@@ -76,9 +87,10 @@ public class CardPanel extends JPanel{
 				panel.add(cardField);
 			}
 		}
-		
+
 		panel.add(new JLabel("Seen:"));
-		
+
+		//		Update Seen. Gray for contrast with cards in hand
 		for(Card c : seen) {
 			if(c.getCardType() == cardType) {
 				JTextField cardField = new JTextField(c.getCardName());
@@ -87,50 +99,50 @@ public class CardPanel extends JPanel{
 				panel.add(cardField);
 			}
 		}
-		
+
 		this.add(panel);
 	}
-	
-	
+
+
 	public HumanPlayer getPlayer() {
 		return player;
 	}
-	
-//	Test main for card Panel
+
+	//	Test main for card Panel
 	public static void main(String[] args) {
-//		Initialize board values
+		//		Initialize board values
 		Board board = Board.getInstance();
 		board.setConfigFiles("ClueLayout.csv", "ClueSetup.txt");
 		board.initialize();
-		
-//		Create test panel and frame
+
+		//		Create test panel and frame
 		CardPanel testPanel = new CardPanel();
 		JFrame testFrame = new JFrame("Card Panel");
-//		Test Player
+		//		Test Player
 		HumanPlayer player = testPanel.getPlayer();
-		
-//		Test Hand
+
+		//		Test Hand
 		Card personCard = new Card(CardType.PERSON, "TestPerson");
 		Card weaponCard = new Card(CardType.WEAPON, "TestWeapon");
 		Card roomCard = new Card(CardType.ROOM, "TestRoom");
 		Card roomCard2 = new Card(CardType.ROOM, "RoomTest");
-//		
+		//		
 		player.updateHand(personCard);
 		player.updateHand(roomCard);
 		player.updateHand(weaponCard);
 		player.updateHand(roomCard2);
-		
-//		Test Seen
+
+		//		Test Seen
 		Card seenPerson = new Card(CardType.PERSON, "seenPerson");
 		Card seenWeapon = new Card(CardType.WEAPON, "seenWeapon");
 		Card seenWeapon2 = new Card(CardType.WEAPON, "AK47");
 		Card seenRoom = new Card(CardType.ROOM, "seenRoom");
-		
+
 		player.updateSeen(seenPerson);
 		player.updateSeen(seenWeapon);
 		player.updateSeen(seenRoom);
 		player.updateSeen(seenWeapon2);
-		
+
 		testPanel.updatePanels();
 		testFrame.setContentPane(testPanel);
 		testFrame.setSize(400,750);

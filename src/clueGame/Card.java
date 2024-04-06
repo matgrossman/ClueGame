@@ -13,12 +13,6 @@ public class Card {
 		this.cardName = cardName;
 		color = Color.WHITE;
 	}
-	public Card(CardType cardType, String cardName, Color color) {
-		super();
-		this.cardType = cardType;
-		this.cardName = cardName;
-		this.color = color;
-	}
 	@Override
 	public boolean equals(Object o) {
 		if(!(o instanceof Card)) {
