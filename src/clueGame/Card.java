@@ -1,14 +1,23 @@
 package clueGame;
 
+import java.awt.Color;
+
 public class Card {
 	private CardType cardType;
 	private String cardName;
-	
+	private Color color;
 	
 	public Card(CardType cardType, String cardName) {
 		super();
 		this.cardType = cardType;
 		this.cardName = cardName;
+		color = Color.WHITE;
+	}
+	public Card(CardType cardType, String cardName, Color color) {
+		super();
+		this.cardType = cardType;
+		this.cardName = cardName;
+		this.color = color;
 	}
 	@Override
 	public boolean equals(Object o) {
