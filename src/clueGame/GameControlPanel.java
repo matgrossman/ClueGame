@@ -125,6 +125,8 @@ public class GameControlPanel extends JPanel {
 		this.setRollTF(val);
 	}
 	
+	
+	
 	/**
 	 * Main to test the panel
 	 * 
