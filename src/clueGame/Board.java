@@ -515,6 +515,12 @@ public class Board {
 	public ArrayList<Card> getDeck() {
 		return deck;
 	}
+	public BoardCell[][] getGrid() {
+		return grid;
+	}
+	public ArrayList<Room> getRooms(){
+		return new ArrayList<Room>(roomMap.values());
+	}
 	private void clear() {
 		roomMap.clear();
 		deck.clear();

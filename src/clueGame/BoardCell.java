@@ -4,6 +4,10 @@
 
 package clueGame;
 
+import java.awt.BasicStroke;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -35,6 +39,56 @@ public class BoardCell {
 		super();
 	}
 	
+	public void draw(int squareSize,Graphics g) {
+		Graphics2D g2 = (Graphics2D)g;
+		g2.setStroke(new BasicStroke(1));
+		//g.drawRect(row*squareSize, col*squareSize, squareSize, squareSize);
+		switch(initial) {
+		case 'W':
+			g.setColor(Color.ORANGE);
+			g.fillRect(col*squareSize, row*squareSize, squareSize, squareSize);
+			g.setColor(Color.BLACK);
+			g.drawRect(col*squareSize, row*squareSize, squareSize, squareSize);
+			break;
+		case 'X' :
+			g.setColor(Color.BLACK);
+			g.fillRect(col*squareSize, row*squareSize, squareSize, squareSize);
+			break;
+		default: 
+			g.setColor(Color.gray);
+			g.fillRect(col*squareSize, row*squareSize, squareSize, squareSize);
+			break;
+		}
+		
+		g.setColor(Color.BLUE);
+		g2.setStroke(new BasicStroke(3));
+		switch(doorDirection) {
+		case UP:
+			g.drawLine(col*squareSize, row*squareSize-1,(col+1)*squareSize, row*squareSize-1);
+			break;
+		case DOWN:
+			g.drawLine(col*squareSize, (row+1)*squareSize,(col+1)*squareSize, (row+1)*squareSize);
+			break;
+		case LEFT:
+			g.drawLine(col*squareSize-1, row*squareSize,col*squareSize -1, (row+1)*squareSize);
+			break;
+		case RIGHT:
+			g.drawLine((col+1)*squareSize, row*squareSize,(col+1)*squareSize, (row+1)*squareSize);
+			break;
+		default:
+			break;
+		}
+		
+	}
+	
+	public int getRow() {
+		return row;
+	}
+
+	public int getCol() {
+		return col;
+	}
+
 	public void addAdjacency(BoardCell cell) {
 		adjList.add(cell);
 		return;

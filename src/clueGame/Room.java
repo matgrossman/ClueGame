@@ -3,6 +3,8 @@
  */
 package clueGame;
 
+import java.awt.Graphics;
+
 public class Room {
 	private String name;
 	private BoardCell centerCell;
@@ -23,6 +25,10 @@ public class Room {
 	 */	
 	public Room() {
 		super();
+	}
+	
+	public void Draw(Graphics g) {
+		g.drawString(name, labelCell.getRow(),labelCell.getCol());
 	}
 	
 	/** 
