@@ -1,3 +1,9 @@
+/*
+ * Authors: Mathew Grossman, Julian Reyes
+ * 
+ * BoardPanel : Handles GUI related to drawing game board.
+ */
+
 package clueGame;
 
 import java.awt.BorderLayout;
@@ -54,7 +60,7 @@ public class BoardPanel extends JPanel{
 		GameControlPanel controlPanel = new GameControlPanel();
 		CardPanel cardPanel = new CardPanel();
 		
-
+		
 		frame.getContentPane().add(panel, BorderLayout.CENTER);
 		frame.getContentPane().add(controlPanel, BorderLayout.SOUTH);
 		frame.getContentPane().add(cardPanel,BorderLayout.EAST);

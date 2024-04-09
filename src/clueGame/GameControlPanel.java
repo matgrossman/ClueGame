@@ -69,7 +69,7 @@ public class GameControlPanel extends JPanel {
 		guessResPanel.setSize(2,0);
 		JLabel guessResLabel = new JLabel("Guess Result:");
 		guessResPanel.add(guessResLabel);
-		this.setGuessResTF("");
+		this.setGuessResTF("Who Knows?");
 		guessResPanel.add(this.guessResTF);
 		
 		//Adds Elements to Bottom Panel
