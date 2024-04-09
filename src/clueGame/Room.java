@@ -37,7 +37,6 @@ public class Room {
 //		Calculate width of text in pixels to
 		g2.setFont(new Font("Georgia", Font.PLAIN, size/2));
 		g2.getFontMetrics().getStringBounds(name, g2).getWidth();
-//		g.setFont(new Font("ComicSans",Font.PLAIN, size));
 		g.drawString(name, labelCell.getCol()*size,labelCell.getRow()*size);
 	}
 	

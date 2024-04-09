@@ -42,10 +42,9 @@ public class BoardCell {
 	public void draw(int squareSize,Graphics g) {
 		Graphics2D g2 = (Graphics2D)g;
 		g2.setStroke(new BasicStroke(1));
-		//g.drawRect(row*squareSize, col*squareSize, squareSize, squareSize);
 		switch(initial) {
 		case 'W':
-			g.setColor(Color.ORANGE);
+			g.setColor(Color.CYAN);
 			g.fillRect(col*squareSize, row*squareSize, squareSize, squareSize);
 			g.setColor(Color.BLACK);
 			g.drawRect(col*squareSize, row*squareSize, squareSize, squareSize);

@@ -1,5 +1,8 @@
 package clueGame;
 
+import java.awt.Color;
+import java.awt.Graphics;
+//import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -7,7 +10,7 @@ import java.util.Set;
 
 public abstract class Player {
 	private String name;
-	private String color;
+	private Color color;
 	private int row;
 	private int col;
 	
@@ -15,14 +18,20 @@ public abstract class Player {
 	
 	private Set<Card> seenCards;
 	
-	public Player(String name, String color, int row, int col) {
+	public Player(String name, Color color, int row, int col) {
 		this.name = name;
 		this.color = color;
 		this.row = row;
 		this.col = col;
 		seenCards = new HashSet<Card>();
 	}
-	
+	public Player(String name, String color, int row, int col) {
+		this.name = name;
+		this.color = Board.getColor(color);
+		this.row = row;
+		this.col = col;
+		seenCards = new HashSet<Card>();
+	}
 
 	//	Getters for testing purposes
 	public void updateHand(Card card) {
@@ -55,7 +64,13 @@ public abstract class Player {
 		}
 	}
 
-	public String getColor() {
+	public void draw(Graphics g, int size) {
+		g.setColor(color);
+		g.fillOval(col*size, row*size, size, size);
+		g.setColor(Color.BLACK);
+		g.drawOval(col*size, row*size, size, size);
+	}
+	public Color getColor() {
 		return color;
 	}
 

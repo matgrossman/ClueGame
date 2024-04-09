@@ -1,5 +1,6 @@
 package clueGame;
 
+import java.awt.BorderLayout;
 import java.awt.Graphics;
 
 import javax.swing.JFrame;
@@ -38,16 +39,26 @@ public class BoardPanel extends JPanel{
 		for (Room r: board.getRooms()) {
 			r.draw(g, squareSize);
 		}
+		for (Player p : board.getPlayers()) {
+			p.draw(g, squareSize);
+		}
 	}
 	
 	public static void main(String[] args) {
 		Board board = Board.getInstance();
 		board.setConfigFiles("ClueLayout.csv", "ClueSetup.txt");
 		board.initialize();
-		
+		board.deal();
 		JFrame frame = new JFrame();
 		BoardPanel panel = new BoardPanel();  // create the panel
-		frame.setContentPane(panel); // put the panel in the frame
+		GameControlPanel controlPanel = new GameControlPanel();
+		CardPanel cardPanel = new CardPanel();
+		
+
+		frame.getContentPane().add(panel, BorderLayout.CENTER);
+		frame.getContentPane().add(controlPanel, BorderLayout.SOUTH);
+		frame.getContentPane().add(cardPanel,BorderLayout.EAST);
+//		frame.setContentPane(panel); // put the panel in the frame
 		frame.setSize(750, 750);  // size the frame
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // allow it to close
 		frame.setVisible(true); // make it visible

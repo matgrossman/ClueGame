@@ -3,6 +3,7 @@
  */
 package clueGame;
 
+import java.awt.Color;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.ArrayList;
@@ -30,11 +31,11 @@ public class Board {
 
 	private Map<Character, Room> roomMap;
 	private Solution theAnswer;
-	
+
 	private Player[] players = new Player[6];
-	
+
 	private ArrayList<Card> deck;	
-	
+
 	final static String dataFolder = "data/";
 
 	/*
@@ -72,13 +73,13 @@ public class Board {
 	 * loadSetupConfig: Loads in expected rooms from setup.txt file
 	 */
 	public void loadSetupConfig() throws BadConfigFormatException, FileNotFoundException {
-		
+
 		this.clear(); //clears roomMap and deck
-		
+
 		FileReader reader = new FileReader(dataFolder + setupConfigFile);
 		Scanner in  = new Scanner(reader);
 		int playerCtr = 0;
-		
+
 		while(in.hasNextLine()) {
 			String nextLine = in.nextLine();
 			if(nextLine.contains("//") || nextLine.isBlank()) {
@@ -92,8 +93,8 @@ public class Board {
 				r.setName(roomInfo[1].trim());
 				char label = roomInfo[2].trim().charAt(0);
 				roomMap.put(label, r);
-				
-//				Create card
+
+				//				Create card
 				if(roomInfo[0].equals("Room")) {
 					deck.add(new Card(CardType.ROOM, roomInfo[1].trim()));
 				}
@@ -103,7 +104,7 @@ public class Board {
 				String color = roomInfo[2].trim();
 				int row = Integer.parseInt(roomInfo[3].trim());
 				int col = Integer.parseInt(roomInfo[4].trim());
-				
+
 				if(playerCtr == 0) {
 					HumanPlayer human = new HumanPlayer(name, color, row, col);
 					players[playerCtr] = human;
@@ -112,10 +113,10 @@ public class Board {
 					ComputerPlayer cpu = new ComputerPlayer(name, color, row, col);
 					players[playerCtr] = cpu;
 				}
-	
+
 				deck.add(new Card(CardType.PERSON, name));
 				playerCtr++;
-				
+
 			}
 			else if(roomInfo[0].equals("Weapon")) {
 				String name = roomInfo[1].trim();
@@ -272,7 +273,7 @@ public class Board {
 					default:
 						break;
 					}
-					
+
 
 				}
 
@@ -312,48 +313,48 @@ public class Board {
 	 * calcTargets: calculates legal targets for a move from startCell of length pathlength.
 	 * 
 	 */
-	
+
 	public void calcTargets(BoardCell startCell, int pathlength) {
-	    targets.clear();
-	    targetCalc(startCell, pathlength);
+		targets.clear();
+		targetCalc(startCell, pathlength);
 	}
 
 	private void targetCalc(BoardCell startCell, int pathlength) {
-	    if (pathlength == 0) {
-	        targets.add(startCell);
-	        return;
-	    }
-	    
-	    visited.add(startCell); 
-	    
-	    for (BoardCell cell : startCell.getAdjList()) {	
-	        if (!visited.contains(cell) && !cell.isOccupied()) {
-	            if (cell.getInitial() != 'W') {
-	                targets.add(cell);
-	            } 
-	            else {
-	                targetCalc(cell, pathlength - 1);
-	            }
-	        }
-	        if (!visited.contains(cell) && cell.isOccupied() && cell.isRoomCenter()) {
-	        	targets.add(cell);
-	        }
-	    }
-	    
-	    visited.remove(startCell);
+		if (pathlength == 0) {
+			targets.add(startCell);
+			return;
+		}
+
+		visited.add(startCell); 
+
+		for (BoardCell cell : startCell.getAdjList()) {	
+			if (!visited.contains(cell) && !cell.isOccupied()) {
+				if (cell.getInitial() != 'W') {
+					targets.add(cell);
+				} 
+				else {
+					targetCalc(cell, pathlength - 1);
+				}
+			}
+			if (!visited.contains(cell) && cell.isOccupied() && cell.isRoomCenter()) {
+				targets.add(cell);
+			}
+		}
+
+		visited.remove(startCell);
 	}
-	
+
 	public void deal(){
 		Collections.shuffle(deck);
 		dealSolution();
 		dealPlayers();
 	}
-	
+
 	public void dealSolution() {
 		Card roomCard = null;
 		Card personCard = null;
 		Card weaponCard = null;
-		
+
 		int cardCount = 0;
 		while (roomCard == null || personCard == null || weaponCard == null) {
 			if(roomCard == null && deck.get(cardCount).getCardType().equals(CardType.ROOM)) {
@@ -375,7 +376,7 @@ public class Board {
 		theAnswer = new Solution(roomCard,personCard,weaponCard);
 		return;
 	}
-	
+
 	public void dealPlayers() {
 		int playerCount = 0;
 		for (Card c: deck) {
@@ -390,7 +391,7 @@ public class Board {
 		}
 		return;
 	}
-		
+
 	public boolean checkAccusation(Solution accusation) {
 		if(this.theAnswer.getPerson()==accusation.getPerson()&& this.theAnswer.getRoom()==accusation.getRoom()&& this.theAnswer.getWeapon()==accusation.getWeapon()) {
 			return true;
@@ -399,18 +400,18 @@ public class Board {
 			return false;
 		}
 	}
-	
+
 	public Card handleSuggestion(Solution suggestion, Player suggester) {
-		
+
 		int idx = 0;
 		for(int i = 0; i < players.length; i++) {
 			if(suggester == players[i]) {
 				idx = i + 1;
 			}
 		}
-		
+
 		while(players[idx] != suggester) {
-			
+
 			Card disprove = players[idx].disproveSuggestion(suggestion);
 			if(disprove == null) {
 				idx++;
@@ -418,11 +419,11 @@ public class Board {
 				continue;
 			}
 			else return disprove;
-			
+
 		}
 		return null;		//PLACEHOLDER
 	}
-		
+
 	/** 
 	 *  getCell: returns the cell from the board at row, col.
 	 * 
@@ -465,11 +466,11 @@ public class Board {
 		Set <BoardCell> adjList = this.getCell(row, col).getAdjList();
 		return adjList;
 	}
-	
+
 	public void setTheAnswer(Solution theAnswer) {
 		this.theAnswer = theAnswer;
 	}
-	
+
 	public ArrayList<Card> getWeaponCards(){
 		ArrayList<Card> weaponCards = new ArrayList<Card>();
 		for(Card card: deck) {
@@ -479,7 +480,7 @@ public class Board {
 		}
 		return weaponCards;
 	}
-	
+
 	public ArrayList<Card> getRoomCards(){
 		ArrayList<Card> roomCards = new ArrayList<Card>();
 		for(Card card: deck) {
@@ -489,7 +490,7 @@ public class Board {
 		}
 		return roomCards;
 	}
-	
+
 	public ArrayList<Card> getPeopleCards(){
 		ArrayList<Card> peopleCards = new ArrayList<Card>();
 		for(Card card: deck) {
@@ -524,6 +525,25 @@ public class Board {
 	private void clear() {
 		roomMap.clear();
 		deck.clear();
+	}
+
+	public static Color getColor(String color) {
+		switch (color) {
+		case "Green":
+			return Color.GREEN;
+		case "Red":
+			return Color.RED;
+		case "Purple":
+			return Color.MAGENTA;
+		case "Blue":
+			return Color.BLUE;
+		case "Orange":
+			return Color.ORANGE;
+		case "Yellow":
+			return Color.YELLOW;
+		default:
+			return null;
+		}
 	}
 
 }

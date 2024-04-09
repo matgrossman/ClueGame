@@ -91,6 +91,7 @@ public class CardPanel extends JPanel{
 		panel.add(new JLabel("Seen:"));
 
 		//		Update Seen. Gray for contrast with cards in hand
+		if(seen != null) {
 		for(Card c : seen) {
 			if(c.getCardType() == cardType) {
 				JTextField cardField = new JTextField(c.getCardName());
@@ -99,7 +100,7 @@ public class CardPanel extends JPanel{
 				panel.add(cardField);
 			}
 		}
-
+		}
 		this.add(panel);
 	}
 

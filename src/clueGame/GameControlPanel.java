@@ -61,7 +61,7 @@ public class GameControlPanel extends JPanel {
 		guessPanel.setSize(2,0);
 		JLabel guessLabel = new JLabel("Guess:");
 		guessPanel.add(guessLabel);
-		this.setGuessTF("");
+		this.setGuessTF("No Guess");
 		guessPanel.add(this.guessTF);
 		
 		//Creates Guess Res Panel
