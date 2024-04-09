@@ -39,6 +39,9 @@ public class BoardCell {
 		super();
 	}
 	
+	/*
+	 * Draw function for each type of cell (Room, walkway, closet)
+	 */
 	public void draw(int squareSize,Graphics g) {
 		Graphics2D g2 = (Graphics2D)g;
 		g2.setStroke(new BasicStroke(1));

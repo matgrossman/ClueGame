@@ -1,1 +1,1 @@
-Room type '﻿' not found in ClueSetup.txt
+Formatting Error in ClueSetupBadFormat306.txt

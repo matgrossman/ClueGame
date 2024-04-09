@@ -1,6 +1,8 @@
 package clueGame;
 
 
+import java.awt.GridLayout;
+
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -19,15 +21,15 @@ public class GameControlPanel extends JPanel {
 
 
 	public GameControlPanel()  {
-		this.setSize(2,0);
+		this.setLayout(new GridLayout(2,0));
 	
 		//Create Top Panel
 		JPanel topPanel = new JPanel();
-		topPanel.setSize(1,4);
+		topPanel.setLayout(new GridLayout(1,4));
 
 		//Creates Name Panel
 		JPanel turnPanel =  new JPanel();
-		turnPanel.setSize(1,2);
+		turnPanel.setLayout(new GridLayout(1,2));
 		JLabel turnLabel = new JLabel("Who's Turn?");
 		turnPanel.add(turnLabel);
 		this.setPlayerNameTF("Player Name Here");
@@ -35,7 +37,7 @@ public class GameControlPanel extends JPanel {
 		
 		//Creates Roll Panel
 		JPanel rollPanel =  new JPanel();
-		turnPanel.setSize(1,2);
+		turnPanel.setLayout(new GridLayout(1,2));
 		JLabel rollLabel = new JLabel("Roll:");
 		rollPanel.add(rollLabel);
 		this.setRollTF(0);
@@ -54,11 +56,11 @@ public class GameControlPanel extends JPanel {
 		
 		//Create Bottom Panel
 		JPanel bottomPanel = new JPanel();
-		bottomPanel.setSize(0,2);
+		bottomPanel.setLayout(new GridLayout(0,2));
 		
 		//Creates Guess Panel
 		JPanel guessPanel =  new JPanel();
-		guessPanel.setSize(2,0);
+		guessPanel.setLayout(new GridLayout(2,0));
 		JLabel guessLabel = new JLabel("Guess:");
 		guessPanel.add(guessLabel);
 		this.setGuessTF("No Guess");
@@ -66,7 +68,7 @@ public class GameControlPanel extends JPanel {
 		
 		//Creates Guess Res Panel
 		JPanel guessResPanel =  new JPanel();
-		guessResPanel.setSize(2,0);
+		guessResPanel.setLayout(new GridLayout(2,0));
 		JLabel guessResLabel = new JLabel("Guess Result:");
 		guessResPanel.add(guessResLabel);
 		this.setGuessResTF("Who Knows?");

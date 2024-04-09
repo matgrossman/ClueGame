@@ -28,13 +28,14 @@ public class Room {
 	public Room() {
 		super();
 	}
-	
+	/*
+	 * Draw: creates room name text
+	 */
 	public void draw(Graphics g, int size) {
 		Graphics2D g2 = (Graphics2D) g;
 		if(labelCell == null) {
 			return;
 		}
-//		Calculate width of text in pixels to
 		g2.setFont(new Font("Georgia", Font.PLAIN, size/2));
 		g2.getFontMetrics().getStringBounds(name, g2).getWidth();
 		g.drawString(name, labelCell.getCol()*size,labelCell.getRow()*size);

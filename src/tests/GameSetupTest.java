@@ -46,12 +46,12 @@ public class GameSetupTest {
 		assertTrue(players[5].getName().equals("Russell Wilson"));
 		
 //		Test Player colors
-		assertTrue(players[0].getColor().equals("Green"));
-		assertTrue(players[1].getColor().equals("Red"));
-		assertTrue(players[2].getColor().equals("Purple"));
-		assertTrue(players[3].getColor().equals("Blue"));
-		assertTrue(players[4].getColor().equals("Orange"));
-		assertTrue(players[5].getColor().equals("Yellow"));
+		assertTrue(players[0].getColor().equals(Color.GREEN));
+		assertTrue(players[1].getColor().equals(Color.RED));
+		assertTrue(players[2].getColor().equals(Color.MAGENTA));
+		assertTrue(players[3].getColor().equals(Color.BLUE));
+		assertTrue(players[4].getColor().equals(Color.ORANGE));
+		assertTrue(players[5].getColor().equals(Color.YELLOW));
 		
 //		Test Player Locations
 		assertTrue(players[0].getRow() == 0);

@@ -42,10 +42,10 @@ public class CardPanel extends JPanel{
 
 
 		//		Set Borders for panels
-		this.setBorder(BorderFactory.createTitledBorder("Known Cards:"));
-		personPanel.setBorder(BorderFactory.createTitledBorder("People Cards"));
-		roomPanel.setBorder(BorderFactory.createTitledBorder("Room Cards"));
-		weaponPanel.setBorder(BorderFactory.createTitledBorder("Weapon Cards"));
+		this.setBorder(BorderFactory.createTitledBorder("Cards:"));
+		personPanel.setBorder(BorderFactory.createTitledBorder("People"));
+		roomPanel.setBorder(BorderFactory.createTitledBorder("Rooms"));
+		weaponPanel.setBorder(BorderFactory.createTitledBorder("Weapons"));
 
 		hand = player.getHand();
 		seen = player.getSeenCards();
@@ -68,7 +68,6 @@ public class CardPanel extends JPanel{
 		this.updatePanel(personPanel, CardType.PERSON);
 		this.updatePanel(roomPanel, CardType.ROOM);
 		this.updatePanel(weaponPanel, CardType.WEAPON);
-		revalidate();
 	}
 
 	/*

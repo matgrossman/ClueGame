@@ -26,6 +26,9 @@ public class BoardPanel extends JPanel{
 		grid = board.getGrid();
 	}
 
+	/*
+	 * paintComponent: Calls each objects draw() function in order of cell, room name, players.
+	 */
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
@@ -49,7 +52,7 @@ public class BoardPanel extends JPanel{
 			p.draw(g, squareSize);
 		}
 	}
-	
+//	Test main for Board panel
 	public static void main(String[] args) {
 		Board board = Board.getInstance();
 		board.setConfigFiles("ClueLayout.csv", "ClueSetup.txt");
@@ -57,14 +60,8 @@ public class BoardPanel extends JPanel{
 		board.deal();
 		JFrame frame = new JFrame();
 		BoardPanel panel = new BoardPanel();  // create the panel
-		GameControlPanel controlPanel = new GameControlPanel();
-		CardPanel cardPanel = new CardPanel();
-		
-		
-		frame.getContentPane().add(panel, BorderLayout.CENTER);
-		frame.getContentPane().add(controlPanel, BorderLayout.SOUTH);
-		frame.getContentPane().add(cardPanel,BorderLayout.EAST);
-//		frame.setContentPane(panel); // put the panel in the frame
+
+		frame.setContentPane(panel); // put the panel in the frame
 		frame.setSize(750, 750);  // size the frame
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // allow it to close
 		frame.setVisible(true); // make it visible

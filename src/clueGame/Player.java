@@ -2,7 +2,6 @@ package clueGame;
 
 import java.awt.Color;
 import java.awt.Graphics;
-//import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -64,6 +63,9 @@ public abstract class Player {
 		}
 	}
 
+	/*
+	 * Draw(): Makes circle that represents player based on color
+	 */
 	public void draw(Graphics g, int size) {
 		g.setColor(color);
 		g.fillOval(col*size, row*size, size, size);
