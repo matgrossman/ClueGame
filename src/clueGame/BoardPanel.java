@@ -36,7 +36,7 @@ public class BoardPanel extends JPanel{
 			}
 		}
 		for (Room r: board.getRooms()) {
-			r.Draw(g);
+			r.draw(g, squareSize);
 		}
 	}
 	

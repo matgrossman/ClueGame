@@ -3,7 +3,9 @@
  */
 package clueGame;
 
+import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 
 public class Room {
 	private String name;
@@ -27,8 +29,16 @@ public class Room {
 		super();
 	}
 	
-	public void Draw(Graphics g) {
-		g.drawString(name, labelCell.getRow(),labelCell.getCol());
+	public void draw(Graphics g, int size) {
+		Graphics2D g2 = (Graphics2D) g;
+		if(labelCell == null) {
+			return;
+		}
+//		Calculate width of text in pixels to
+		g2.setFont(new Font("Georgia", Font.PLAIN, size/2));
+		g2.getFontMetrics().getStringBounds(name, g2).getWidth();
+//		g.setFont(new Font("ComicSans",Font.PLAIN, size));
+		g.drawString(name, labelCell.getCol()*size,labelCell.getRow()*size);
 	}
 	
 	/** 

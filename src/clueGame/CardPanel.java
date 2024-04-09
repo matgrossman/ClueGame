@@ -146,8 +146,8 @@ public class CardPanel extends JPanel{
 		testPanel.updatePanels();
 		testFrame.setContentPane(testPanel);
 		testFrame.setSize(400,750);
-		testFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		testFrame.setVisible(true);
+		testFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 	}
 }
