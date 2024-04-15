@@ -306,9 +306,7 @@ public class Board {
 		}
 		return;
 	}
-	public static Board getInstance() {
-		return Instance;
-	}
+	
 	/** 
 	 * calcTargets: calculates legal targets for a move from startCell of length pathlength.
 	 * 
@@ -376,6 +374,29 @@ public class Board {
 		theAnswer = new Solution(roomCard,personCard,weaponCard);
 		return;
 	}
+	
+	public Card handleSuggestion(Solution suggestion, Player suggester) {
+		
+		int idx = 0;
+		for(int i = 0; i < players.length; i++) {
+			if(suggester == players[i]) {
+				idx = i + 1;
+			}
+		}
+		
+		while(players[idx] != suggester) {
+			
+			Card disprove = players[idx].disproveSuggestion(suggestion);
+			if(disprove == null) {
+				idx++;
+				idx = idx % players.length;
+				continue;
+			}
+			else return disprove;
+			
+		}
+		return null;		//PLACEHOLDER
+	}
 
 	public void dealPlayers() {
 		int playerCount = 0;
@@ -401,29 +422,10 @@ public class Board {
 		}
 	}
 
-	public Card handleSuggestion(Solution suggestion, Player suggester) {
-
-		int idx = 0;
-		for(int i = 0; i < players.length; i++) {
-			if(suggester == players[i]) {
-				idx = i + 1;
-			}
-		}
-
-		while(players[idx] != suggester) {
-
-			Card disprove = players[idx].disproveSuggestion(suggestion);
-			if(disprove == null) {
-				idx++;
-				idx = idx % players.length;
-				continue;
-			}
-			else return disprove;
-
-		}
-		return null;		//PLACEHOLDER
+	public static Board getInstance() {
+		return Instance;
 	}
-
+	
 	/** 
 	 *  getCell: returns the cell from the board at row, col.
 	 * 
