@@ -129,8 +129,6 @@ public class Board {
 		return;
 	}
 
-
-
 	/*
 	 * loadLayoutConfig: Loads layout csv file and checks against setup file
 	 */
@@ -214,6 +212,10 @@ public class Board {
 		return;
 	}
 
+	
+	/*
+	 * calcAdj: Creates a list of all the cells that are directly next to a cell
+	 */
 	public void calcAdj() {
 
 		for(int row = 0; row < numRows; row++) {
@@ -316,7 +318,11 @@ public class Board {
 		targets.clear();
 		targetCalc(startCell, pathlength);
 	}
-
+	
+	/** 
+	 * targetCalc: helper function of calcTargets that identifies all the targets that a player can move to
+	 * 
+	 */
 	private void targetCalc(BoardCell startCell, int pathlength) {
 		if (pathlength == 0) {
 			targets.add(startCell);
@@ -341,13 +347,21 @@ public class Board {
 
 		visited.remove(startCell);
 	}
+	
+	/** 
+	 * deal: function that shuffles deck to solution and to players
+	 */
 
 	public void deal(){
 		Collections.shuffle(deck);
 		dealSolution();
 		dealPlayers();
 	}
-
+	
+	/** 
+	 * dealSolution: helper function of deal() that deals a room card, person card, and weapon card to solution
+	 */
+	
 	public void dealSolution() {
 		Card roomCard = null;
 		Card personCard = null;
@@ -375,6 +389,28 @@ public class Board {
 		return;
 	}
 	
+	/** 
+	 * dealPlayer:  helper function of deal() that deals all remaining cards to the players 
+	 */
+	public void dealPlayers() {
+		int playerCount = 0;
+		for (Card c: deck) {
+			if (theAnswer.contains(c)==true) {
+				continue;
+			}
+			players[playerCount].updateHand(c);
+			playerCount++;
+			if (playerCount >= players.length) {
+				playerCount = 0;
+			}
+		}
+		return;
+	}
+	
+	/** 
+	 * handleSuggestion: function that proves to handle a provided suggestion to the answer
+	 */
+	
 	public Card handleSuggestion(Solution suggestion, Player suggester) {
 		
 		int idx = 0;
@@ -395,24 +431,9 @@ public class Board {
 			else return disprove;
 			
 		}
-		return null;		//PLACEHOLDER
+		return null;		
 	}
-
-	public void dealPlayers() {
-		int playerCount = 0;
-		for (Card c: deck) {
-			if (theAnswer.contains(c)==true) {
-				continue;
-			}
-			players[playerCount].updateHand(c);
-			playerCount++;
-			if (playerCount >= players.length) {
-				playerCount = 0;
-			}
-		}
-		return;
-	}
-
+	
 	public boolean checkAccusation(Solution accusation) {
 		if(this.theAnswer.getPerson()==accusation.getPerson()&& this.theAnswer.getRoom()==accusation.getRoom()&& this.theAnswer.getWeapon()==accusation.getWeapon()) {
 			return true;
