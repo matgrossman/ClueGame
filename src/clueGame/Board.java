@@ -78,49 +78,57 @@ public class Board {
 		int playerCtr = 0;
 
 		while(in.hasNextLine()) {
-			String nextLine = in.nextLine();
-			if(nextLine.contains("//") || nextLine.isBlank()) {
-				continue;
-			}
-
-			String[] roomInfo = nextLine.split(",");
-
-			if (roomInfo[0].equals("Room") || roomInfo[0].equals("Space")) {
-				Room r = new Room();
-				r.setName(roomInfo[1].trim());
-				char label = roomInfo[2].trim().charAt(0);
-				roomMap.put(label, r);
-
-				//				Create card
-				if(roomInfo[0].equals("Room")) {
-					deck.add(new Card(CardType.ROOM, roomInfo[1].trim()));
+			try {
+				String nextLine = in.nextLine();
+				if(nextLine.contains("//") || nextLine.isBlank()) {
+					continue;
 				}
-			}
-			else if(roomInfo[0].equals("Player")){
-				String name = roomInfo[1].trim();
-				String color = roomInfo[2].trim();
-				int row = Integer.parseInt(roomInfo[3].trim());
-				int col = Integer.parseInt(roomInfo[4].trim());
 
-				if(playerCtr == 0) {
-					HumanPlayer human = new HumanPlayer(name, color, row, col);
-					players[playerCtr] = human;
+				String[] roomInfo = nextLine.split(",");
+
+				if (roomInfo[0].equals("Room") || roomInfo[0].equals("Space")) {
+					Room r = new Room();
+					r.setName(roomInfo[1].trim());
+					char label = roomInfo[2].trim().charAt(0);
+					roomMap.put(label, r);
+
+					//				Create card
+					if(roomInfo[0].equals("Room")) {
+						deck.add(new Card(CardType.ROOM, roomInfo[1].trim()));
+					}
+				}
+				else if(roomInfo[0].equals("Player")){
+					String name = roomInfo[1].trim();
+					String color = roomInfo[2].trim();
+					int row = Integer.parseInt(roomInfo[3].trim());
+					int col = Integer.parseInt(roomInfo[4].trim());
+
+					if(playerCtr == 0) {
+						HumanPlayer human = new HumanPlayer(name, color, row, col);
+						players[playerCtr] = human;
+					}
+					else {
+						ComputerPlayer cpu = new ComputerPlayer(name, color, row, col);
+						players[playerCtr] = cpu;
+					}
+
+					deck.add(new Card(CardType.PERSON, name));
+					playerCtr++;
+
+				}
+				else if(roomInfo[0].equals("Weapon")) {
+					String name = roomInfo[1].trim();
+					deck.add(new Card(CardType.WEAPON, name));
 				}
 				else {
-					ComputerPlayer cpu = new ComputerPlayer(name, color, row, col);
-					players[playerCtr] = cpu;
+					throw new BadConfigFormatException("Formatting Error in " + setupConfigFile);
 				}
-
-				deck.add(new Card(CardType.PERSON, name));
-				playerCtr++;
-
-			}
-			else if(roomInfo[0].equals("Weapon")) {
-				String name = roomInfo[1].trim();
-				deck.add(new Card(CardType.WEAPON, name));
-			}
-			else {
-				throw new BadConfigFormatException("Formatting Error in " + setupConfigFile);
+			} catch (NumberFormatException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (BadConfigFormatException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 		}
 		return;
