@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.Scanner;
@@ -68,8 +69,9 @@ public class Board {
 
 	/*
 	 * loadSetupConfig: Loads in expected rooms from setup.txt file
+	 * Passes errors to initialize for exception handling
 	 */
-	public void loadSetupConfig() throws BadConfigFormatException, FileNotFoundException {
+	public void loadSetupConfig() throws BadConfigFormatException, FileNotFoundException, IndexOutOfBoundsException {
 
 		this.clear(); //clears roomMap and deck
 
@@ -78,57 +80,49 @@ public class Board {
 		int playerCtr = 0;
 
 		while(in.hasNextLine()) {
-			try {
-				String nextLine = in.nextLine();
-				if(nextLine.contains("//") || nextLine.isBlank()) {
-					continue;
+			String nextLine = in.nextLine();
+			if(nextLine.contains("//") || nextLine.isBlank()) {
+				continue;
+			}
+
+			String[] roomInfo = nextLine.split(",");
+
+			if (roomInfo[0].equals("Room") || roomInfo[0].equals("Space")) {
+				Room r = new Room();
+				r.setName(roomInfo[1].trim());
+				char label = roomInfo[2].trim().charAt(0);
+				roomMap.put(label, r);
+
+				//				Create card
+				if(roomInfo[0].equals("Room")) {
+					deck.add(new Card(CardType.ROOM, roomInfo[1].trim()));
 				}
+			}
+			else if(roomInfo[0].equals("Player")){
+				String name = roomInfo[1].trim();
+				String color = roomInfo[2].trim();
+				int row = Integer.parseInt(roomInfo[3].trim());
+				int col = Integer.parseInt(roomInfo[4].trim());
 
-				String[] roomInfo = nextLine.split(",");
-
-				if (roomInfo[0].equals("Room") || roomInfo[0].equals("Space")) {
-					Room r = new Room();
-					r.setName(roomInfo[1].trim());
-					char label = roomInfo[2].trim().charAt(0);
-					roomMap.put(label, r);
-
-					//				Create card
-					if(roomInfo[0].equals("Room")) {
-						deck.add(new Card(CardType.ROOM, roomInfo[1].trim()));
-					}
-				}
-				else if(roomInfo[0].equals("Player")){
-					String name = roomInfo[1].trim();
-					String color = roomInfo[2].trim();
-					int row = Integer.parseInt(roomInfo[3].trim());
-					int col = Integer.parseInt(roomInfo[4].trim());
-
-					if(playerCtr == 0) {
-						HumanPlayer human = new HumanPlayer(name, color, row, col);
-						players[playerCtr] = human;
-					}
-					else {
-						ComputerPlayer cpu = new ComputerPlayer(name, color, row, col);
-						players[playerCtr] = cpu;
-					}
-
-					deck.add(new Card(CardType.PERSON, name));
-					playerCtr++;
-
-				}
-				else if(roomInfo[0].equals("Weapon")) {
-					String name = roomInfo[1].trim();
-					deck.add(new Card(CardType.WEAPON, name));
+				if(playerCtr == 0) {
+					HumanPlayer human = new HumanPlayer(name, color, row, col);
+					players[playerCtr] = human;
 				}
 				else {
-					throw new BadConfigFormatException("Formatting Error in " + setupConfigFile);
+					ComputerPlayer cpu = new ComputerPlayer(name, color, row, col);
+					players[playerCtr] = cpu;
 				}
-			} catch (NumberFormatException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (BadConfigFormatException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+
+				deck.add(new Card(CardType.PERSON, name));
+				playerCtr++;
+
+			}
+			else if(roomInfo[0].equals("Weapon")) {
+				String name = roomInfo[1].trim();
+				deck.add(new Card(CardType.WEAPON, name));
+			}
+			else {
+				throw new BadConfigFormatException("Formatting Error in " + setupConfigFile);
 			}
 		}
 		return;
@@ -152,7 +146,6 @@ public class Board {
 		rowCount.close();
 		numRows = row;
 		row = 0;
-		col = 0;
 		grid = new BoardCell[numRows][numCols];
 
 		FileReader read2 = new FileReader(dataFolder + layoutConfigFile);
@@ -215,7 +208,6 @@ public class Board {
 			}
 			row++;
 		}
-		return;
 	}
 
 	
@@ -492,15 +484,14 @@ public class Board {
 	}
 
 	public Set<BoardCell> getAdjList(int row, int col) {
-		Set <BoardCell> adjList = this.getCell(row, col).getAdjList();
-		return adjList;
+		return this.getCell(row, col).getAdjList();
 	}
 
 	public void setTheAnswer(Solution theAnswer) {
 		this.theAnswer = theAnswer;
 	}
 
-	public ArrayList<Card> getWeaponCards(){
+	public List<Card> getWeaponCards(){
 		ArrayList<Card> weaponCards = new ArrayList<Card>();
 		for(Card card: deck) {
 			if(card.getCardType()==CardType.WEAPON) {
@@ -510,7 +501,7 @@ public class Board {
 		return weaponCards;
 	}
 
-	public ArrayList<Card> getRoomCards(){
+	public List<Card> getRoomCards(){
 		ArrayList<Card> roomCards = new ArrayList<Card>();
 		for(Card card: deck) {
 			if(card.getCardType()==CardType.ROOM) {
@@ -520,7 +511,7 @@ public class Board {
 		return roomCards;
 	}
 
-	public ArrayList<Card> getPeopleCards(){
+	public List<Card> getPeopleCards(){
 		ArrayList<Card> peopleCards = new ArrayList<Card>();
 		for(Card card: deck) {
 			if(card.getCardType()==CardType.PERSON) {
@@ -532,7 +523,7 @@ public class Board {
 
 	public Card getCard(String cardName) {
 		for(Card c : deck) {
-			if(c.getCardName() == cardName) {
+			if(c.getCardName().equals(cardName)) {
 				return c;
 			}
 		}
@@ -542,13 +533,13 @@ public class Board {
 	public Solution getTheAnswer() {
 		return theAnswer;
 	}
-	public ArrayList<Card> getDeck() {
+	public List<Card> getDeck() {
 		return deck;
 	}
 	public BoardCell[][] getGrid() {
 		return grid;
 	}
-	public ArrayList<Room> getRooms(){
+	public List<Room> getRooms(){
 		return new ArrayList<Room>(roomMap.values());
 	}
 	private void clear() {
