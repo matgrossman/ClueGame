@@ -5,7 +5,6 @@ import java.awt.Graphics;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 public abstract class Player {
@@ -95,7 +94,7 @@ public abstract class Player {
 		this.col = col;
 	}
 
-	public List<Card> getHand() {
+	public ArrayList<Card> getHand() {
 		return hand;
 	}
 

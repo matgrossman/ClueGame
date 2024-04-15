@@ -143,7 +143,6 @@ public class CardPanel extends JPanel{
 		player.updateSeen(seenRoom);
 		player.updateSeen(seenWeapon2);
 
-//		Run Update to show changes to panel
 		testPanel.updatePanels();
 		testFrame.setContentPane(testPanel);
 		testFrame.setSize(400,750);
