@@ -189,7 +189,8 @@ public class Board {
 					case '<':
 						cell.setDoorDirection(DoorDirection.LEFT);
 						break;
-
+						default:
+							throw new BadConfigFormatException("Unexcpected Character " + special + " in " + layoutConfigFile);
 					}
 
 					if(roomMap.containsKey(special)) {
