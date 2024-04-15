@@ -32,7 +32,6 @@ public abstract class Player {
 		seenCards = new HashSet<Card>();
 	}
 
-	//	Getters for testing purposes
 	public void updateHand(Card card) {
 		hand.add(card);
 		return;
@@ -72,6 +71,9 @@ public abstract class Player {
 		g.setColor(Color.BLACK);
 		g.drawOval(col*size, row*size, size, size);
 	}
+	
+	
+	//	Getters for testing purposes
 	public Color getColor() {
 		return color;
 	}
