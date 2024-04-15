@@ -14,12 +14,25 @@ public class ComputerPlayer extends Player{
 	public ComputerPlayer(String name, String color, int row, int col) {
 		super(name, color, row, col);
 	}
+	
 	public Solution createSuggestion(Room room){
 		Board board = Board.getInstance();
-		ArrayList<Card> weaponList = board.getWeaponCards();
-		ArrayList<Card> peopleList = board.getPeopleCards();
 		ArrayList<Card> roomList = board.getRoomCards();
 		
+		Card weapon = suggestWeapon(board);
+		Card person = suggestPerson(board);
+
+		Card roomCard = null;
+		for (Card c: roomList) {
+			if (room.getName().equals(c.getCardName())){
+				roomCard = c;
+			}
+		}
+		return new Solution(roomCard, person, weapon);
+	}
+	
+	public Card suggestWeapon(Board board) {
+		ArrayList<Card> weaponList = board.getWeaponCards();
 		Card weapon = null;
 		Collections.shuffle(weaponList);
 		for (Card c: weaponList) {
@@ -30,7 +43,11 @@ public class ComputerPlayer extends Player{
 				weapon = c;
 			}
 		}
-		
+		return weapon;
+	}
+	
+	public Card suggestPerson(Board board) {
+		ArrayList<Card> peopleList = board.getPeopleCards();
 		Card person = null;
 		Collections.shuffle(peopleList);
 		for (Card c: peopleList) {
@@ -41,13 +58,7 @@ public class ComputerPlayer extends Player{
 				person = c;
 			}
 		}
-		Card roomCard = null;
-		for (Card c: roomList) {
-			if (room.getName().equals(c.getCardName())){
-				roomCard = c;
-			}
-		}
-		return new Solution(roomCard, person, weapon);
+		return person;	
 	}
 	
 	public BoardCell selectTarget(Set<BoardCell> targets) {
