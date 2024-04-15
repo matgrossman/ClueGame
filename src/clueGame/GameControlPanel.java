@@ -12,7 +12,6 @@ import javax.swing.JTextField;
 
 public class GameControlPanel extends JPanel {
 	
-	private GameControlPanel gui;
 	private JTextField playerNameTF = new JTextField();
 	private JTextField guessTF = new JTextField();
 	private JTextField guessResTF = new JTextField();

@@ -11,10 +11,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
-import java.util.Random;
 import java.util.Scanner;
 import java.util.Set;
-import java.util.Stack;
 
 
 
@@ -78,7 +76,7 @@ public class Board {
 		int playerCtr = 0;
 
 		while(in.hasNextLine()) {
-			try {
+
 				String nextLine = in.nextLine();
 				if(nextLine.contains("//") || nextLine.isBlank()) {
 					continue;
@@ -123,13 +121,7 @@ public class Board {
 				else {
 					throw new BadConfigFormatException("Formatting Error in " + setupConfigFile);
 				}
-			} catch (NumberFormatException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (BadConfigFormatException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+
 		}
 		return;
 	}
@@ -198,12 +190,15 @@ public class Board {
 						cell.setDoorDirection(DoorDirection.LEFT);
 						break;
 						default:
+							if(roomMap.containsKey(special)) {
+								cell.setSecretPassage(special);
+							}
+							else {
 							throw new BadConfigFormatException("Unexcpected Character " + special + " in " + layoutConfigFile);
+							}
+							break;
 					}
 
-					if(roomMap.containsKey(special)) {
-						cell.setSecretPassage(special);
-					}
 				}
 
 				grid[row][col] = cell;

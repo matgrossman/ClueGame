@@ -14,11 +14,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import clueGame.Board;
-import clueGame.Card;
-import clueGame.CardType;
-import clueGame.HumanPlayer;
-import clueGame.Player;
 
 public class CardPanel extends JPanel{
 	private JPanel personPanel;

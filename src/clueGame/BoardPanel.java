@@ -6,7 +6,6 @@
 
 package clueGame;
 
-import java.awt.BorderLayout;
 import java.awt.Graphics;
 
 import javax.swing.JFrame;
