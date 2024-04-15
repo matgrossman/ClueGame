@@ -11,8 +11,11 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Random;
 import java.util.Scanner;
 import java.util.Set;
+
+import javax.swing.JOptionPane;
 
 
 
@@ -26,14 +29,19 @@ public class Board {
 
 	private int numCols;
 	private int numRows;
+	private int curPlayerIDX = 0;
+	private boolean isHumanTurn = true;
+	private int roll = 5;
+
 
 	private Map<Character, Room> roomMap;
 	private Solution theAnswer;
 
 	private Player[] players = new Player[6];
-
+	private Player curPlayer;
 	private ArrayList<Card> deck;	
 
+	private Random rng = new Random();
 	final static String dataFolder = "data/";
 
 	/*
@@ -407,7 +415,35 @@ public class Board {
 		}
 		return;
 	}
+
 	
+	public void nextButton() {
+//		Is player turn finished
+		if(isHumanTurn) {
+			JOptionPane.showMessageDialog(null, "Please finish your turn!");
+		}
+//		update current player
+		curPlayerIDX++;
+		curPlayerIDX %= 6;
+		curPlayer = players[curPlayerIDX];
+		turn();
+//		If human: display targets. Flag turn unfinished
+//		end
+//		else: Computer check accusation, then move, then suggestion
+	}
+	
+	public void turn() {
+//		Roll dice
+		roll = rollDice();
+//		Calc targets
+		targetCalc(getCell(curPlayer.getRow(), curPlayer.getCol()), roll);
+	}
+
+	
+
+	private int rollDice() {
+		return rng.nextInt(1, 6);
+	}
 	/** 
 	 * handleSuggestion: function that proves to handle a provided suggestion to the answer
 	 */
@@ -572,5 +608,17 @@ public class Board {
 
 	public Player[] getPlayers() {
 		return players;
+	}
+	
+	public Player getCurPlayer() {
+		return players[curPlayerIDX];
+	}
+	
+	public boolean isHumanTurn() {
+		return isHumanTurn;
+	}
+	
+	public int getRoll() {
+		return roll;
 	}
 }

@@ -24,6 +24,7 @@ public class BoardCell {
 	private char secretPassage;
 	private char initial;
 	private boolean isOccupied;
+	private Board board = Board.getInstance();
 	
 	public BoardCell(int row, int col) {
 		this.row = row;
@@ -79,6 +80,11 @@ public class BoardCell {
 			break;
 		default:
 			break;
+		}
+		
+		if(board.getTargets().contains(this) && board.isHumanTurn()) {
+			g.setColor(Color.PINK);
+			g.fillRect(col*squareSize, row*squareSize, squareSize, squareSize);
 		}
 		
 	}

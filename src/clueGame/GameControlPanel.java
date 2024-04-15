@@ -2,10 +2,13 @@ package clueGame;
 
 
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
@@ -16,8 +19,7 @@ public class GameControlPanel extends JPanel {
 	private JTextField guessTF = new JTextField();
 	private JTextField guessResTF = new JTextField();
 	private JTextField rollTF = new JTextField();
-
-
+	private Board board = Board.getInstance();
 
 	public GameControlPanel()  {
 		this.setLayout(new GridLayout(2,0));
@@ -46,6 +48,19 @@ public class GameControlPanel extends JPanel {
 		JButton accuButton = new JButton("Make Accusation");
 		JButton nextButton = new JButton("Next!");
 		
+		nextButton.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				board.nextButton();
+
+				setPlayerNameTF(board.getCurPlayer().getName());
+				setRollTF(board.getRoll());
+				setGuessTF("");
+				setGuessResTF("");
+			}
+			
+		});
 		
 		//Adds Elements to Top Panel
 		topPanel.add(turnPanel);
@@ -84,7 +99,7 @@ public class GameControlPanel extends JPanel {
 		
 	}
 	
-	
+
 	public JTextField getPlayerNameTF() {
 		return playerNameTF;
 	}
