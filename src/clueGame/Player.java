@@ -53,7 +53,7 @@ public abstract class Player {
 				matchCards.add(c);
 			}
 		}
-		if (matchCards.size() == 0) {
+		if (matchCards.isEmpty()) {
 			return null;
 		}
 		else {
