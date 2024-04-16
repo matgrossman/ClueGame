@@ -3,6 +3,7 @@
  */
 package clueGame;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -15,6 +16,7 @@ import java.util.Random;
 import java.util.Scanner;
 import java.util.Set;
 
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 
@@ -26,6 +28,9 @@ public class Board {
 
 	private String layoutConfigFile;
 	private String setupConfigFile;
+	
+	private ClueGame clueGameDisplay;
+
 
 	private int numCols;
 	private int numRows;
@@ -55,6 +60,7 @@ public class Board {
 		visited = new HashSet<BoardCell>();
 		roomMap = new HashMap<Character, Room>();
 		deck = new ArrayList<Card>();
+		
 	}
 	/*
 	 * initialize the board (since we are using singleton pattern)
@@ -65,6 +71,7 @@ public class Board {
 			this.loadSetupConfig();
 			this.loadLayoutConfig();
 			this.calcAdj();
+			clueGameDisplay = new ClueGame();
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 			e.printStackTrace();
@@ -419,12 +426,12 @@ public class Board {
 	
 	public void nextButton() {
 //		Is player turn finished
-		if(isHumanTurn) {
-			JOptionPane.showMessageDialog(null, "Please finish your turn!");
-		}
+//		if(isHumanTurn) {
+//			JOptionPane.showMessageDialog(null, "Please finish your turn!");
+//		}
 //		update current player
 		curPlayerIDX++;
-		curPlayerIDX %= 6;
+		curPlayerIDX = curPlayerIDX % 6;
 		curPlayer = players[curPlayerIDX];
 		turn();
 //		If human: display targets. Flag turn unfinished
@@ -436,13 +443,19 @@ public class Board {
 //		Roll dice
 		roll = rollDice();
 //		Calc targets
-		targetCalc(getCell(curPlayer.getRow(), curPlayer.getCol()), roll);
+		calcTargets(getCell(curPlayer.getRow(), curPlayer.getCol()), roll);
+		
+		if (curPlayer.getClass().equals(ComputerPlayer.class)) {
+			((ComputerPlayer)curPlayer).selectTarget(targets);
+		}
+		
+		clueGameDisplay.repaint();
 	}
 
 	
 
 	private int rollDice() {
-		return rng.nextInt(1, 6);
+		return rng.nextInt(1, 7);
 	}
 	/** 
 	 * handleSuggestion: function that proves to handle a provided suggestion to the answer
@@ -620,5 +633,32 @@ public class Board {
 	
 	public int getRoll() {
 		return roll;
+	}
+	public ClueGame getClueGameDisplay() {
+		return clueGameDisplay;
+	}
+	
+	public static void main(String[] args) {
+		Board board = Board.getInstance();
+		board.setConfigFiles("ClueLayout.csv", "ClueSetup.txt");
+		board.initialize();
+		board.deal();
+		ClueGame game = board.getClueGameDisplay();
+		game.setLayout(new BorderLayout());
+		BoardPanel panel = game.getBoardpanel();
+		GameControlPanel controlPanel = game.getControlPanel();
+		CardPanel cardPanel = game.getCardPanel();
+		
+		controlPanel.updateFields();
+		
+		game.getContentPane().add(panel, BorderLayout.CENTER);
+		game.getContentPane().add(controlPanel, BorderLayout.SOUTH);
+		game.getContentPane().add(cardPanel,BorderLayout.EAST);
+		game.setSize(750, 750);  // size the frame
+		game.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // allow it to close
+		game.setVisible(true); // make it visible
+		
+		JOptionPane.showMessageDialog(null, "You are Draymond Green. Can you find the solution before the Computer Players?");
+		controlPanel.setPlayerNameTF(board.getCurPlayer().getName());
 	}
 }

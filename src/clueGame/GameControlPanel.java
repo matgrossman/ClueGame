@@ -53,11 +53,8 @@ public class GameControlPanel extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				board.nextButton();
-
-				setPlayerNameTF(board.getCurPlayer().getName());
-				setRollTF(board.getRoll());
-				setGuessTF("");
-				setGuessResTF("");
+				
+				updateFields();
 			}
 			
 		});
@@ -97,6 +94,13 @@ public class GameControlPanel extends JPanel {
 		this.add(topPanel);
 		this.add(bottomPanel);
 		
+	}
+	
+	public void updateFields() {
+		setPlayerNameTF(board.getCurPlayer().getName());
+		setRollTF(board.getRoll());
+		setGuessTF("");
+		setGuessResTF("");
 	}
 	
 

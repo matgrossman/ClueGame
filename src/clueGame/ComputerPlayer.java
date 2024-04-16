@@ -79,7 +79,12 @@ public class ComputerPlayer extends Player{
 		Random rng = new Random();
 		int randIdx = rng.nextInt(cells.length);
 		
-		return cells[randIdx];
+		BoardCell cell = cells[randIdx];
+		
+		this.setRow(cell.getRow());
+		this.setCol(cell.getCol());
+		
+		return cell;
 	}
 
 
