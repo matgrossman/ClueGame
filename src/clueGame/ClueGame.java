@@ -18,6 +18,10 @@ public class ClueGame extends JFrame{
 		super();
 		this.setSize(800,800);
 	}
+	public void update() {
+		controlPanel.updateFields();
+		cardPanel.updatePanels();
+	}
 	
 	
 //	Update panels

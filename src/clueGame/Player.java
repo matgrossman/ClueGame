@@ -13,17 +13,12 @@ public abstract class Player {
 	private int row;
 	private int col;
 	
+	private Board board = Board.getInstance();
+	
 	private ArrayList<Card> hand = new ArrayList<Card>();
 	
 	private Set<Card> seenCards;
-	
-	public Player(String name, Color color, int row, int col) {
-		this.name = name;
-		this.color = color;
-		this.row = row;
-		this.col = col;
-		seenCards = new HashSet<Card>();
-	}
+
 	public Player(String name, String color, int row, int col) {
 		this.name = name;
 		this.color = Board.getColor(color);
@@ -66,10 +61,24 @@ public abstract class Player {
 	 * Draw(): Makes circle that represents player based on color
 	 */
 	public void draw(Graphics g, int size) {
+		int offset = 0;
+		BoardCell cell = board.getCell(row, col);
+		if (cell.isRoomCenter()) {
+			ArrayList<Player> occupants = board.getRoom(cell).getOccupants();
+			for(Player p: board.getPlayers()) {
+				if(this.equals(p)) {
+					break;
+				}
+				if (occupants.contains(p)) {
+					offset += size/2; 
+				}
+			}
+		}
 		g.setColor(color);
-		g.fillOval(col*size, row*size, size, size);
+		g.fillOval(col*size+offset, row*size, size, size);
 		g.setColor(Color.BLACK);
-		g.drawOval(col*size, row*size, size, size);
+		g.drawOval(col*size+offset, row*size, size, size);
+		
 	}
 	
 	

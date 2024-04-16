@@ -8,9 +8,7 @@ import java.util.Set;
 
 public class ComputerPlayer extends Player{
 
-	public ComputerPlayer(String name, Color color, int row, int col) {
-		super(name, color, row, col);
-	}
+
 	public ComputerPlayer(String name, String color, int row, int col) {
 		super(name, color, row, col);
 	}
@@ -63,6 +61,15 @@ public class ComputerPlayer extends Player{
 	
 	public BoardCell selectTarget(Set<BoardCell> targets) {
 		Board board = Board.getInstance();
+		BoardCell preCell  =  board.getCell(getRow(), getCol());
+		if (preCell.isRoomCenter()) {
+			Room preRoom = board.getRoom(preCell);
+			preRoom.removeOccupant(this);
+		}
+		else{
+			preCell.setOccupied(false);
+		}
+		
 		for(BoardCell cell : targets) {
 			if(cell.isRoomCenter()) {
 				Card roomCard = board.getCard(board.getRoom(cell).getName());
@@ -70,6 +77,11 @@ public class ComputerPlayer extends Player{
 					continue;
 				}
 				else {
+					board.getRoom(cell).addOccupant(this);
+					cell.setOccupied(true);
+					super.updateSeen(roomCard);
+					this.setRow(cell.getRow());
+					this.setCol(cell.getCol());
 					return cell;
 				}
 			}
@@ -83,6 +95,7 @@ public class ComputerPlayer extends Player{
 		
 		this.setRow(cell.getRow());
 		this.setCol(cell.getCol());
+		cell.setOccupied(true);
 		
 		return cell;
 	}

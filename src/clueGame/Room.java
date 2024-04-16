@@ -6,11 +6,14 @@ package clueGame;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.util.ArrayList;
 
 public class Room {
 	private String name;
 	private BoardCell centerCell;
 	private BoardCell labelCell;
+	
+	private ArrayList<Player> occupants;
 
 	/** 
 	 * Parameterized Constructor: Initializes Test Board with name, center cell, and label cell.
@@ -20,6 +23,7 @@ public class Room {
 		this.name = name;
 		this.centerCell = centerCell;
 		this.labelCell = labelCell;
+		this.occupants = new ArrayList<Player>();
 	}
 	
 	/** 
@@ -27,6 +31,7 @@ public class Room {
 	 */	
 	public Room() {
 		super();
+		this.occupants = new ArrayList<Player>();
 	}
 	/*
 	 * Draw: creates room name text
@@ -81,6 +86,24 @@ public class Room {
 	public BoardCell getCenterCell() {
 		return centerCell;
 	}
+	
+	public ArrayList<Player> getOccupants() {
+		return occupants;
+	}
+	
+	public void removeOccupant(Player p) {
+		occupants.remove(p);
+		if(occupants.isEmpty()) {
+			centerCell.setOccupied(false);
+		}
+		return;
+	}
+	
+	public void addOccupant(Player p) {
+		occupants.add(p);
+		return;
+	}
+
 
 
 

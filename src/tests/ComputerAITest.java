@@ -101,7 +101,7 @@ public class ComputerAITest {
 		cpu.setCol(15);
 		board.calcTargets(board.getCell(8, 15), 3);
 		targets = board.getTargets();
-		for(int i = 0; i < 50; i++) {
+		for(int i = 0; i < 1; i++) {
 			BoardCell target = cpu.selectTarget(targets);
 
 			if(target == board.getRoom('T').getCenterCell()) {

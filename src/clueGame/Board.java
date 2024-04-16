@@ -35,8 +35,8 @@ public class Board {
 	private int numCols;
 	private int numRows;
 	private int curPlayerIDX = 0;
-	private boolean isHumanTurn = true;
-	private int roll = 5;
+	private boolean isHumanTurn;
+	private int roll;
 
 
 	private Map<Character, Room> roomMap;
@@ -60,7 +60,6 @@ public class Board {
 		visited = new HashSet<BoardCell>();
 		roomMap = new HashMap<Character, Room>();
 		deck = new ArrayList<Card>();
-		
 	}
 	/*
 	 * initialize the board (since we are using singleton pattern)
@@ -72,6 +71,8 @@ public class Board {
 			this.loadLayoutConfig();
 			this.calcAdj();
 			clueGameDisplay = new ClueGame();
+			isHumanTurn = true;
+			curPlayer = players[0];
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 			e.printStackTrace();
@@ -425,14 +426,20 @@ public class Board {
 
 	
 	public void nextButton() {
-//		Is player turn finished
-//		if(isHumanTurn) {
-//			JOptionPane.showMessageDialog(null, "Please finish your turn!");
-//		}
+		if(isHumanTurn) {
+			JOptionPane.showMessageDialog(null, "Please finish your turn!");
+			return;
+		}
 //		update current player
+		if (isHumanTurn) {
+			isHumanTurn = false;
+		}
 		curPlayerIDX++;
 		curPlayerIDX = curPlayerIDX % 6;
 		curPlayer = players[curPlayerIDX];
+		if(curPlayer.getClass().equals(HumanPlayer.class)) {
+			isHumanTurn = true;
+		}
 		turn();
 //		If human: display targets. Flag turn unfinished
 //		end
@@ -445,17 +452,31 @@ public class Board {
 //		Calc targets
 		calcTargets(getCell(curPlayer.getRow(), curPlayer.getCol()), roll);
 		
-		if (curPlayer.getClass().equals(ComputerPlayer.class)) {
+		if (!isHumanTurn) {
 			((ComputerPlayer)curPlayer).selectTarget(targets);
 		}
-		
 		clueGameDisplay.repaint();
+	}
+	public void mouseClick(int row, int col) {
+		if (isHumanTurn) {
+			BoardCell cell = getCell(row,col);
+			if(targets.contains(cell)) {
+				((HumanPlayer)curPlayer).updateOccupancy(cell);
+				isHumanTurn = false;
+				clueGameDisplay.repaint();
+			}
+			else {
+				JOptionPane.showMessageDialog(null, "Select a Proper Target");
+			}
+		}
 	}
 
 	
 
 	private int rollDice() {
-		return rng.nextInt(1, 7);
+		int roll = rng.nextInt(1, 7);
+		clueGameDisplay.getControlPanel().setRollTF(roll);
+		return roll;
 	}
 	/** 
 	 * handleSuggestion: function that proves to handle a provided suggestion to the answer
@@ -648,8 +669,7 @@ public class Board {
 		BoardPanel panel = game.getBoardpanel();
 		GameControlPanel controlPanel = game.getControlPanel();
 		CardPanel cardPanel = game.getCardPanel();
-		
-		controlPanel.updateFields();
+		game.update();
 		
 		game.getContentPane().add(panel, BorderLayout.CENTER);
 		game.getContentPane().add(controlPanel, BorderLayout.SOUTH);
@@ -660,5 +680,6 @@ public class Board {
 		
 		JOptionPane.showMessageDialog(null, "You are Draymond Green. Can you find the solution before the Computer Players?");
 		controlPanel.setPlayerNameTF(board.getCurPlayer().getName());
+		board.turn();
 	}
 }

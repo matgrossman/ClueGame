@@ -7,8 +7,11 @@
 package clueGame;
 
 import java.awt.Graphics;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 public class BoardPanel extends JPanel{
@@ -16,6 +19,7 @@ public class BoardPanel extends JPanel{
 	private int numRows;
 	private int numCols;
 	private BoardCell[][] grid;
+	private int squareSize;
 
 	public BoardPanel() {
 		super();
@@ -23,6 +27,25 @@ public class BoardPanel extends JPanel{
 		numRows = board.getNumRows();
 		numCols = board.getNumColumns();
 		grid = board.getGrid();
+		addMouseListener(new MouseListener() {
+
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				int x = e.getX()/squareSize;
+				int y = e.getY()/squareSize;
+				if (x > numCols || y > numRows) {
+					return;
+				}
+				else {
+					board.mouseClick(y, x);
+				}
+			}
+			public void mousePressed(MouseEvent e) {}
+			public void mouseReleased(MouseEvent e) {}
+			public void mouseEntered(MouseEvent e) {}
+			public void mouseExited(MouseEvent e) {}
+			
+		});
 	}
 
 	/*
@@ -37,7 +60,7 @@ public class BoardPanel extends JPanel{
 		int squareHeight = pageHeight / numRows;
 		int squareWidth = pageWidth / numCols;
 		
-		int squareSize = Math.min(squareHeight, squareWidth);
+		squareSize = Math.min(squareHeight, squareWidth);
 		
 		for (int i = 0; i < numRows; i++) {
 			for (int j = 0; j < numCols; j++) {
@@ -51,6 +74,7 @@ public class BoardPanel extends JPanel{
 			p.draw(g, squareSize);
 		}
 	}
+
 //	Test main for Board panel
 	public static void main(String[] args) {
 		Board board = Board.getInstance();
