@@ -32,6 +32,13 @@ public class Solution {
 			return false;
 		}
 	}
+	
+
+	@Override
+	public String toString() {
+		return "lol";
+		//return room.getCardName() + ", " + person.getCardName() + ", " + weapon.getCardName();
+	}
 
 }
 

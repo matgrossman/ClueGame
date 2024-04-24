@@ -37,6 +37,10 @@ public class Board {
 	private int curPlayerIDX = 0;
 	private boolean isHumanTurn;
 	private int roll;
+	private boolean sugProven;
+	
+	private Solution prevSug;
+
 
 
 	private Map<Character, Room> roomMap;
@@ -334,6 +338,9 @@ public class Board {
 	public void calcTargets(BoardCell startCell, int pathlength) {
 		targets.clear();
 		targetCalc(startCell, pathlength);
+		if (startCell.isRoomCenter() && curPlayer.getSeenCards().contains(getCard(getRoom(startCell).getName()))) {
+			targets.add(startCell);
+		}
 	}
 	
 	/** 
@@ -453,9 +460,27 @@ public class Board {
 		calcTargets(getCell(curPlayer.getRow(), curPlayer.getCol()), roll);
 		
 		if (!isHumanTurn) {
+			if (sugProven == true) {
+				checkAccusation(prevSug);
+			}
 			((ComputerPlayer)curPlayer).selectTarget(targets);
+			BoardCell cur = grid[curPlayer.getRow()][curPlayer.getCol()];
+			if (cur.isRoomCenter()) {
+				Solution sug = ((ComputerPlayer)curPlayer).createSuggestion(getRoom(cur));
+				Player accused = getPlayer(sug.getPerson().getCardName());
+				accused.setRow(cur.getRow());
+				accused.setCol(cur.getCol());
+				Card disproveCard  = handleSuggestion(sug,curPlayer);
+				if (disproveCard == null) {
+					sugProven = true;
+					prevSug = sug;
+				}
+				
+			}
+			
 		}
 		clueGameDisplay.repaint();
+		
 	}
 	public void mouseClick(int row, int col) {
 		if (isHumanTurn) {
@@ -483,25 +508,34 @@ public class Board {
 	 */
 	
 	public Card handleSuggestion(Solution suggestion, Player suggester) {
-		
+		clueGameDisplay.getControlPanel().setGuessTF(suggestion.toString());
 		int idx = 0;
 		for(int i = 0; i < players.length; i++) {
 			if(suggester == players[i]) {
-				idx = i + 1;
+				idx = (i + 1) % players.length;
 			}
 		}
 		
 		while(players[idx] != suggester) {
-			
 			Card disprove = players[idx].disproveSuggestion(suggestion);
 			if(disprove == null) {
 				idx++;
 				idx = idx % players.length;
 				continue;
 			}
-			else return disprove;
+			else {
+				suggester.updateSeen(disprove);
+				if (isHumanTurn) {
+					clueGameDisplay.getControlPanel().setGuessResTF(disprove.getCardName());
+				}
+				else {
+					clueGameDisplay.getControlPanel().setGuessResTF("Guess Was Wrong");
+				}
+				return disprove;
+			}
 			
 		}
+		clueGameDisplay.getControlPanel().setGuessResTF("Guess Was Not Disproven");
 		return null;		
 	}
 	
@@ -597,7 +631,7 @@ public class Board {
 
 	public Card getCard(String cardName) {
 		for(Card c : deck) {
-			if(c.getCardName() == cardName) {
+			if(c.getCardName().equals(cardName)) {
 				return c;
 			}
 		}
@@ -657,6 +691,21 @@ public class Board {
 	}
 	public ClueGame getClueGameDisplay() {
 		return clueGameDisplay;
+	}
+	
+	public boolean isSugProven() {
+		return sugProven;
+	}
+	public void setSugProven(boolean sugProven) {
+		this.sugProven = sugProven;
+	}
+	public Player getPlayer(String name) {
+		for (Player p: players) {
+			if (p.getName().equals(name)) {
+				return p;
+			}
+		}
+		return null;
 	}
 	
 	public static void main(String[] args) {

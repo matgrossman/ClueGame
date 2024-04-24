@@ -4,7 +4,6 @@ import java.awt.Color;
 
 public class HumanPlayer extends Player{
 
-	private boolean isTurnFinished;
 	private Board board = Board.getInstance();
 
 	public HumanPlayer(String name, String color, int row, int col) {
@@ -29,12 +28,5 @@ public class HumanPlayer extends Player{
 		}
 	}
 
-	
-	public boolean isTurnFinished() {
-		return isTurnFinished;
-	}
-	public void setTurnFinished(boolean isTurnFinished) {
-		this.isTurnFinished = isTurnFinished;
-	}
 	
 }
