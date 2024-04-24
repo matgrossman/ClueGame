@@ -561,7 +561,6 @@ public class Board {
 	}
 
 	public boolean checkAccusation(Solution accusation) {
-		System.out.println("balls");
 		if(this.theAnswer.getPerson()==accusation.getPerson()&& this.theAnswer.getRoom()==accusation.getRoom()&& this.theAnswer.getWeapon()==accusation.getWeapon()) {
 			return true;
 		}
