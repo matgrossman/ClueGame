@@ -468,6 +468,8 @@ public class Board {
 				Player accused = getPlayer(sug.getPerson().getCardName());
 				accused.setRow(cur.getRow());
 				accused.setCol(cur.getCol());
+				Room accuRoom = getRoom(cur.getInitial());
+				accuRoom.addOccupant(accused);
 				Card disproveCard  = handleSuggestion(sug,curPlayer);
 				if (disproveCard == null) {
 					sugProven = true;
@@ -508,6 +510,9 @@ public class Board {
 		Player accused = getPlayer(suggestion.getPerson().getCardName());
 		accused.setRow(curPlayer.getRow());
 		accused.setCol(curPlayer.getCol());
+		BoardCell cur = grid[curPlayer.getRow()][curPlayer.getCol()];
+		Room accuRoom = getRoom(cur.getInitial());
+		accuRoom.addOccupant(accused);
 		Card disproveCard = handleSuggestion(suggestion, curPlayer);
 		if (disproveCard == null) {
 			sugProven = true;
