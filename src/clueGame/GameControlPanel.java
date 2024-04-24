@@ -56,7 +56,12 @@ public class GameControlPanel extends JPanel {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				new SugModal();
+				if (!board.isHumanTurn()) {
+					JOptionPane.showMessageDialog(null, "It is not your turn!");
+				}
+				else{
+					new SugModal();
+				}
 			}
 			
 		});

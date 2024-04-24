@@ -381,6 +381,7 @@ public class Board {
 		Collections.shuffle(deck);
 		dealSolution();
 		dealPlayers();
+		Collections.shuffle(deck);
 	}
 
 	/** 

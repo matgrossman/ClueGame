@@ -11,6 +11,7 @@ import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 public class SugModal extends JDialog{
@@ -94,7 +95,14 @@ public class SugModal extends JDialog{
 
 				Solution suggestion = new Solution(((Card)rooms.getSelectedItem()),((Card)people.getSelectedItem()),((Card)weapons.getSelectedItem()));
 				if(room == null) {
-					board.checkAccusation(suggestion);
+					boolean isAccu = board.checkAccusation(suggestion);
+					if (isAccu) {
+						JOptionPane.showMessageDialog(null, "Congrats You Won Clue!");
+					}
+					else {
+						JOptionPane.showMessageDialog(null, "Sorry, Not Correct. You Lose!");
+					}
+					board.getClueGameDisplay().dispose();
 				}
 				else {
 					board.humanSuggestion(suggestion);
@@ -111,9 +119,9 @@ public class SugModal extends JDialog{
 			public void actionPerformed(ActionEvent e) {
 				if(room != null) {
 					board.humanSuggestion(null);
+					board.endHumanTurn();
 				}
 				SugModal.this.dispose();
-				board.endHumanTurn();
 			}
 
 		});
