@@ -338,9 +338,10 @@ public class Board {
 	public void calcTargets(BoardCell startCell, int pathlength) {
 		targets.clear();
 		targetCalc(startCell, pathlength);
-		if (startCell.isRoomCenter() && curPlayer.getSeenCards().contains(getCard(getRoom(startCell).getName()))) {
+		if (curPlayer.isWasAccused()) {
 			targets.add(startCell);
 		}
+		curPlayer.setWasAccused(false);
 	}
 
 	/** 
@@ -466,6 +467,7 @@ public class Board {
 			if (cur.isRoomCenter()) {
 				Solution sug = ((ComputerPlayer)curPlayer).createSuggestion(getRoom(cur));
 				Player accused = getPlayer(sug.getPerson().getCardName());
+				accused.setWasAccused(true);
 				accused.setRow(cur.getRow());
 				accused.setCol(cur.getCol());
 				Room accuRoom = getRoom(cur.getInitial());
@@ -510,6 +512,7 @@ public class Board {
 		Player accused = getPlayer(suggestion.getPerson().getCardName());
 		accused.setRow(curPlayer.getRow());
 		accused.setCol(curPlayer.getCol());
+		accused.setWasAccused(true);
 		BoardCell cur = grid[curPlayer.getRow()][curPlayer.getCol()];
 		Room accuRoom = getRoom(cur.getInitial());
 		accuRoom.addOccupant(accused);

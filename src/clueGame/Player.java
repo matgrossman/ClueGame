@@ -12,6 +12,7 @@ public abstract class Player {
 	private Color color;
 	private int row;
 	private int col;
+	private boolean wasAccused = false;
 	
 	protected Board board = Board.getInstance();
 	
@@ -116,5 +117,14 @@ public abstract class Player {
 	public Set<Card> getSeenCards() {
 		return seenCards;
 	}
+
+	public boolean isWasAccused() {
+		return wasAccused;
+	}
+
+	public void setWasAccused(boolean wasAccused) {
+		this.wasAccused = wasAccused;
+	}
+	
 
 }
