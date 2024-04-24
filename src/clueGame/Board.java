@@ -28,7 +28,7 @@ public class Board {
 
 	private String layoutConfigFile;
 	private String setupConfigFile;
-	
+
 	private ClueGame clueGameDisplay;
 
 
@@ -38,10 +38,10 @@ public class Board {
 	private boolean isHumanTurn;
 	private int roll;
 	private boolean sugProven;
-	
+
 	private Solution prevSug;
 
-
+	private boolean panelOpen = false;
 
 	private Map<Character, Room> roomMap;
 	private Solution theAnswer;
@@ -97,50 +97,50 @@ public class Board {
 
 		while(in.hasNextLine()) {
 
-				String nextLine = in.nextLine();
-				if(nextLine.contains("//") || nextLine.isBlank()) {
-					continue;
+			String nextLine = in.nextLine();
+			if(nextLine.contains("//") || nextLine.isBlank()) {
+				continue;
+			}
+
+			String[] roomInfo = nextLine.split(",");
+
+			if (roomInfo[0].equals("Room") || roomInfo[0].equals("Space")) {
+				Room r = new Room();
+				r.setName(roomInfo[1].trim());
+				char label = roomInfo[2].trim().charAt(0);
+				roomMap.put(label, r);
+
+				//				Create card
+				if(roomInfo[0].equals("Room")) {
+					deck.add(new Card(CardType.ROOM, roomInfo[1].trim()));
 				}
+			}
+			else if(roomInfo[0].equals("Player")){
+				String name = roomInfo[1].trim();
+				String color = roomInfo[2].trim();
+				int row = Integer.parseInt(roomInfo[3].trim());
+				int col = Integer.parseInt(roomInfo[4].trim());
 
-				String[] roomInfo = nextLine.split(",");
-
-				if (roomInfo[0].equals("Room") || roomInfo[0].equals("Space")) {
-					Room r = new Room();
-					r.setName(roomInfo[1].trim());
-					char label = roomInfo[2].trim().charAt(0);
-					roomMap.put(label, r);
-
-					//				Create card
-					if(roomInfo[0].equals("Room")) {
-						deck.add(new Card(CardType.ROOM, roomInfo[1].trim()));
-					}
-				}
-				else if(roomInfo[0].equals("Player")){
-					String name = roomInfo[1].trim();
-					String color = roomInfo[2].trim();
-					int row = Integer.parseInt(roomInfo[3].trim());
-					int col = Integer.parseInt(roomInfo[4].trim());
-
-					if(playerCtr == 0) {
-						HumanPlayer human = new HumanPlayer(name, color, row, col);
-						players[playerCtr] = human;
-					}
-					else {
-						ComputerPlayer cpu = new ComputerPlayer(name, color, row, col);
-						players[playerCtr] = cpu;
-					}
-
-					deck.add(new Card(CardType.PERSON, name));
-					playerCtr++;
-
-				}
-				else if(roomInfo[0].equals("Weapon")) {
-					String name = roomInfo[1].trim();
-					deck.add(new Card(CardType.WEAPON, name));
+				if(playerCtr == 0) {
+					HumanPlayer human = new HumanPlayer(name, color, row, col);
+					players[playerCtr] = human;
 				}
 				else {
-					throw new BadConfigFormatException("Formatting Error in " + setupConfigFile);
+					ComputerPlayer cpu = new ComputerPlayer(name, color, row, col);
+					players[playerCtr] = cpu;
 				}
+
+				deck.add(new Card(CardType.PERSON, name));
+				playerCtr++;
+
+			}
+			else if(roomInfo[0].equals("Weapon")) {
+				String name = roomInfo[1].trim();
+				deck.add(new Card(CardType.WEAPON, name));
+			}
+			else {
+				throw new BadConfigFormatException("Formatting Error in " + setupConfigFile);
+			}
 
 		}
 		return;
@@ -209,14 +209,14 @@ public class Board {
 					case '<':
 						cell.setDoorDirection(DoorDirection.LEFT);
 						break;
-						default:
-							if(roomMap.containsKey(special)) {
-								cell.setSecretPassage(special);
-							}
-							else {
+					default:
+						if(roomMap.containsKey(special)) {
+							cell.setSecretPassage(special);
+						}
+						else {
 							throw new BadConfigFormatException("Unexcpected Character " + special + " in " + layoutConfigFile);
-							}
-							break;
+						}
+						break;
 					}
 
 				}
@@ -233,7 +233,7 @@ public class Board {
 		return;
 	}
 
-	
+
 	/*
 	 * calcAdj: Creates a list of all the cells that are directly next to a cell
 	 */
@@ -329,7 +329,7 @@ public class Board {
 		}
 		return;
 	}
-	
+
 	/** 
 	 * calcTargets: calculates legal targets for a move from startCell of length pathlength.
 	 * 
@@ -342,7 +342,7 @@ public class Board {
 			targets.add(startCell);
 		}
 	}
-	
+
 	/** 
 	 * targetCalc: helper function of calcTargets that identifies all the targets that a player can move to
 	 * 
@@ -371,7 +371,7 @@ public class Board {
 
 		visited.remove(startCell);
 	}
-	
+
 	/** 
 	 * deal: function that shuffles deck to solution and to players
 	 */
@@ -381,11 +381,11 @@ public class Board {
 		dealSolution();
 		dealPlayers();
 	}
-	
+
 	/** 
 	 * dealSolution: helper function of deal() that deals a room card, person card, and weapon card to solution
 	 */
-	
+
 	public void dealSolution() {
 		Card roomCard = null;
 		Card personCard = null;
@@ -412,7 +412,7 @@ public class Board {
 		theAnswer = new Solution(roomCard,personCard,weaponCard);
 		return;
 	}
-	
+
 	/** 
 	 * dealPlayer:  helper function of deal() that deals all remaining cards to the players 
 	 */
@@ -431,34 +431,32 @@ public class Board {
 		return;
 	}
 
-	
+
 	public void nextButton() {
 		if(isHumanTurn) {
 			JOptionPane.showMessageDialog(null, "Please finish your turn!");
 			return;
 		}
-//		update current player
-		if (isHumanTurn) {
-			isHumanTurn = false;
-		}
+		//		update current player
 		curPlayerIDX++;
 		curPlayerIDX = curPlayerIDX % 6;
 		curPlayer = players[curPlayerIDX];
 		if(curPlayer.getClass().equals(HumanPlayer.class)) {
 			isHumanTurn = true;
 		}
+		clueGameDisplay.getControlPanel().updateFields();
 		turn();
-//		If human: display targets. Flag turn unfinished
-//		end
-//		else: Computer check accusation, then move, then suggestion
+		//		If human: display targets. Flag turn unfinished
+		//		end
+		//		else: Computer check accusation, then move, then suggestion
 	}
-	
+
 	public void turn() {
-//		Roll dice
+		//		Roll dice
 		roll = rollDice();
-//		Calc targets
+		//		Calc targets
 		calcTargets(getCell(curPlayer.getRow(), curPlayer.getCol()), roll);
-		
+
 		if (!isHumanTurn) {
 			if (sugProven == true) {
 				checkAccusation(prevSug);
@@ -475,19 +473,28 @@ public class Board {
 					sugProven = true;
 					prevSug = sug;
 				}
-				
+
 			}
-			
+
 		}
 		clueGameDisplay.repaint();
-		
+		//		clueGameDisplay.update();
+
 	}
 	public void mouseClick(int row, int col) {
 		if (isHumanTurn) {
 			BoardCell cell = getCell(row,col);
 			if(targets.contains(cell)) {
+				targets.clear();
 				((HumanPlayer)curPlayer).updateOccupancy(cell);
-				isHumanTurn = false;
+
+				if(cell.isRoomCenter()) {
+					Room r = getRoom(cell);
+					SugModal window = new SugModal(r);
+				}
+				else {
+					isHumanTurn = false;
+				}
 				clueGameDisplay.repaint();
 			}
 			else {
@@ -496,7 +503,20 @@ public class Board {
 		}
 	}
 
-	
+	public void humanSuggestion(Solution suggestion) {
+		if(suggestion == null)return;
+		Player accused = getPlayer(suggestion.getPerson().getCardName());
+		accused.setRow(curPlayer.getRow());
+		accused.setCol(curPlayer.getCol());
+		Card disproveCard = handleSuggestion(suggestion, curPlayer);
+		if (disproveCard == null) {
+			sugProven = true;
+			prevSug = suggestion;
+		} 
+		isHumanTurn = false;
+		clueGameDisplay.repaint();
+	}
+
 
 	private int rollDice() {
 		int roll = rng.nextInt(1, 7);
@@ -506,7 +526,7 @@ public class Board {
 	/** 
 	 * handleSuggestion: function that proves to handle a provided suggestion to the answer
 	 */
-	
+
 	public Card handleSuggestion(Solution suggestion, Player suggester) {
 		clueGameDisplay.getControlPanel().setGuessTF(suggestion.toString());
 		int idx = 0;
@@ -515,7 +535,7 @@ public class Board {
 				idx = (i + 1) % players.length;
 			}
 		}
-		
+
 		while(players[idx] != suggester) {
 			Card disprove = players[idx].disproveSuggestion(suggestion);
 			if(disprove == null) {
@@ -527,19 +547,21 @@ public class Board {
 				suggester.updateSeen(disprove);
 				if (isHumanTurn) {
 					clueGameDisplay.getControlPanel().setGuessResTF(disprove.getCardName());
+					clueGameDisplay.getCardPanel().updatePanels();
 				}
 				else {
 					clueGameDisplay.getControlPanel().setGuessResTF("Guess Was Wrong");
 				}
 				return disprove;
 			}
-			
+
 		}
 		clueGameDisplay.getControlPanel().setGuessResTF("Guess Was Not Disproven");
 		return null;		
 	}
-	
+
 	public boolean checkAccusation(Solution accusation) {
+		System.out.println("balls");
 		if(this.theAnswer.getPerson()==accusation.getPerson()&& this.theAnswer.getRoom()==accusation.getRoom()&& this.theAnswer.getWeapon()==accusation.getWeapon()) {
 			return true;
 		}
@@ -551,7 +573,7 @@ public class Board {
 	public static Board getInstance() {
 		return Instance;
 	}
-	
+
 	/** 
 	 *  getCell: returns the cell from the board at row, col.
 	 * 
@@ -677,22 +699,22 @@ public class Board {
 	public Player[] getPlayers() {
 		return players;
 	}
-	
+
 	public Player getCurPlayer() {
 		return players[curPlayerIDX];
 	}
-	
+
 	public boolean isHumanTurn() {
 		return isHumanTurn;
 	}
-	
+
 	public int getRoll() {
 		return roll;
 	}
 	public ClueGame getClueGameDisplay() {
 		return clueGameDisplay;
 	}
-	
+
 	public boolean isSugProven() {
 		return sugProven;
 	}
@@ -707,7 +729,7 @@ public class Board {
 		}
 		return null;
 	}
-	
+
 	public static void main(String[] args) {
 		Board board = Board.getInstance();
 		board.setConfigFiles("ClueLayout.csv", "ClueSetup.txt");
@@ -718,15 +740,16 @@ public class Board {
 		BoardPanel panel = game.getBoardpanel();
 		GameControlPanel controlPanel = game.getControlPanel();
 		CardPanel cardPanel = game.getCardPanel();
-		game.update();
-		
+		cardPanel.updatePanels();
+		controlPanel.updateFields();
+
 		game.getContentPane().add(panel, BorderLayout.CENTER);
 		game.getContentPane().add(controlPanel, BorderLayout.SOUTH);
 		game.getContentPane().add(cardPanel,BorderLayout.EAST);
 		game.setSize(750, 750);  // size the frame
 		game.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // allow it to close
 		game.setVisible(true); // make it visible
-		
+
 		JOptionPane.showMessageDialog(null, "You are Draymond Green. Can you find the solution before the Computer Players?");
 		controlPanel.setPlayerNameTF(board.getCurPlayer().getName());
 		board.turn();

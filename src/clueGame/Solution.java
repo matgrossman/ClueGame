@@ -36,8 +36,7 @@ public class Solution {
 
 	@Override
 	public String toString() {
-		return "lol";
-		//return room.getCardName() + ", " + person.getCardName() + ", " + weapon.getCardName();
+		return room.getCardName() + ", " + person.getCardName() + ", " + weapon.getCardName();
 	}
 
 }

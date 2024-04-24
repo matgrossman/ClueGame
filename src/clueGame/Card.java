@@ -3,6 +3,7 @@ package clueGame;
 import java.awt.Color;
 
 public class Card {
+
 	private CardType cardType;
 	private String cardName;
 	private Color color;
@@ -31,6 +32,10 @@ public class Card {
 	}
 
 	public String getCardName() {
+		return cardName;
+	}
+	@Override
+	public String toString() {
 		return cardName;
 	}
 }

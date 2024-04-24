@@ -5,29 +5,28 @@
 package clueGame;
 
 import java.awt.BorderLayout;
+import java.awt.Graphics;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 public class ClueGame extends JFrame{
-	private Board board = Board.getInstance();
-	BoardPanel Boardpanel = new BoardPanel();
-	GameControlPanel controlPanel = new GameControlPanel();
-	CardPanel cardPanel = new CardPanel();
+	private BoardPanel Boardpanel = new BoardPanel();
+	private GameControlPanel controlPanel = new GameControlPanel();
+	private CardPanel cardPanel = new CardPanel();
 	public ClueGame() {
 		super();
 		this.setSize(800,800);
 	}
-	public void update() {
-		controlPanel.updateFields();
-		cardPanel.updatePanels();
-	}
-	
-	
-//	Update panels
-	
+//	public void update() {
+//		controlPanel.updateFields();
+//		cardPanel.updatePanels();
+//	}
 
-public BoardPanel getBoardpanel() {
+	//	Update panels
+
+
+	public BoardPanel getBoardpanel() {
 		return Boardpanel;
 	}
 

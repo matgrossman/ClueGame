@@ -28,5 +28,11 @@ public class HumanPlayer extends Player{
 		}
 	}
 
+	public Solution createSuggestion(Room room) {
+		
+		return null;
+	}
+
+	
 	
 }

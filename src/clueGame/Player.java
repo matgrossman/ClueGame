@@ -13,7 +13,7 @@ public abstract class Player {
 	private int row;
 	private int col;
 	
-	private Board board = Board.getInstance();
+	protected Board board = Board.getInstance();
 	
 	private ArrayList<Card> hand = new ArrayList<Card>();
 	
@@ -80,8 +80,6 @@ public abstract class Player {
 		g.drawOval(col*size+offset, row*size, size, size);
 		
 	}
-	
-	
 	//	Getters for testing purposes
 	public Color getColor() {
 		return color;

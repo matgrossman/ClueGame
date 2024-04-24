@@ -24,6 +24,11 @@ public class GameControlPanel extends JPanel {
 	public GameControlPanel()  {
 		this.setLayout(new GridLayout(2,0));
 	
+		
+		playerNameTF.setEditable(false);
+		guessResTF.setEditable(false);
+		guessTF.setEditable(false);
+		rollTF.setEditable(false);
 		//Create Top Panel
 		JPanel topPanel = new JPanel();
 		topPanel.setLayout(new GridLayout(1,4));
@@ -46,6 +51,15 @@ public class GameControlPanel extends JPanel {
 		
 		//Creates Buttons
 		JButton accuButton = new JButton("Make Accusation");
+		
+		accuButton.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				new SugModal();
+			}
+			
+		});
 		JButton nextButton = new JButton("Next!");
 		
 		nextButton.addActionListener(new ActionListener(){
@@ -54,7 +68,6 @@ public class GameControlPanel extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				board.nextButton();
 				
-				updateFields();
 			}
 			
 		});

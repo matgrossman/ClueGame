@@ -60,6 +60,9 @@ public class ComputerPlayer extends Player{
 	}
 	
 	public BoardCell selectTarget(Set<BoardCell> targets) {
+		if(targets.isEmpty()) {
+			return board.getCell(getRow(), getCol());
+		}
 		Board board = Board.getInstance();
 		BoardCell preCell  =  board.getCell(getRow(), getCol());
 		if (preCell.isRoomCenter()) {

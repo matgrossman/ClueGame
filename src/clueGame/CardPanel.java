@@ -50,19 +50,19 @@ public class CardPanel extends JPanel{
 		roomPanel.setLayout(new GridLayout(0,1));
 		//		
 
-		this.setName("Cards Known:");
-
 		this.updatePanels();
 
 
 
 	}
 	public void updatePanels() {
+		this.removeAll();
 		hand = player.getHand();
 		seen = player.getSeenCards();
 		this.updatePanel(personPanel, CardType.PERSON);
 		this.updatePanel(roomPanel, CardType.ROOM);
 		this.updatePanel(weaponPanel, CardType.WEAPON);
+		revalidate();
 	}
 
 	/*
@@ -71,6 +71,7 @@ public class CardPanel extends JPanel{
 	 */
 	public void updatePanel(JPanel panel, CardType cardType) {
 		panel.removeAll();
+
 		panel.add(new JLabel("In Hand:"));
 
 
@@ -86,16 +87,17 @@ public class CardPanel extends JPanel{
 
 		//		Update Seen. Gray for contrast with cards in hand
 		if(seen != null) {
-		for(Card c : seen) {
-			if(c.getCardType() == cardType) {
-				JTextField cardField = new JTextField(c.getCardName());
-				cardField.setEditable(false);
-				cardField.setBackground(Color.GRAY);
-				panel.add(cardField);
+			for(Card c : seen) {
+				if(c.getCardType() == cardType) {
+					JTextField cardField = new JTextField(c.getCardName());
+					cardField.setEditable(false);
+					cardField.setBackground(Color.GRAY);
+					panel.add(cardField);
+				}
 			}
 		}
-		}
-		this.add(panel);
+		panel.setVisible(true);
+		add(panel);
 	}
 
 
