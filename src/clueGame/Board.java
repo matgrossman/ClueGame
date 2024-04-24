@@ -733,6 +733,10 @@ public class Board {
 		}
 		return null;
 	}
+	
+	public void endHumanTurn() {
+		this.isHumanTurn = false;
+	}
 
 	public static void main(String[] args) {
 		Board board = Board.getInstance();

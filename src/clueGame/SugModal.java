@@ -20,33 +20,6 @@ public class SugModal extends JDialog{
 	JButton submitButton = new JButton("Submit");
 	JButton cancelButton = new JButton("Cancel");
 
-	WindowListener exitListener = new WindowListener() {
-
-		@Override
-		public void windowOpened(WindowEvent e) {}
-
-		@Override
-		public void windowClosing(WindowEvent e) {}
-
-		@Override
-		public void windowClosed(WindowEvent e) {
-			board.humanSuggestion(null);
-			SugModal.this.dispose();
-		}
-
-		@Override
-		public void windowIconified(WindowEvent e) {}
-
-		@Override
-		public void windowDeiconified(WindowEvent e) {}
-
-		@Override
-		public void windowActivated(WindowEvent e) {}
-
-		@Override
-		public void windowDeactivated(WindowEvent e) {}
-
-	};
 	public SugModal() {
 		super();
 		room = null;
@@ -62,6 +35,7 @@ public class SugModal extends JDialog{
 	}
 
 	private void create() {
+		this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 		this.setLayout(new GridLayout(4,2));
 		JPanel roomPanel = new JPanel();
 		roomPanel.setLayout(new GridLayout(1,2));
@@ -139,6 +113,7 @@ public class SugModal extends JDialog{
 					board.humanSuggestion(null);
 				}
 				SugModal.this.dispose();
+				board.endHumanTurn();
 			}
 
 		});
