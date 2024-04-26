@@ -13,6 +13,10 @@ public class ComputerPlayer extends Player{
 		super(name, color, row, col);
 	}
 	
+	/*
+	 * createSuggestion: Makes suggestion when in room
+	 * 
+	 */
 	public Solution createSuggestion(Room room){
 		Board board = Board.getInstance();
 		ArrayList<Card> roomList = board.getRoomCards();

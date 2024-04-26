@@ -434,6 +434,9 @@ public class Board {
 	}
 
 
+	/*
+	 * nextButton(): Event driven by next button pressed.
+	 */
 	public void nextButton() {
 		if(isHumanTurn) {
 			JOptionPane.showMessageDialog(null, "Please finish your turn!");
@@ -453,6 +456,10 @@ public class Board {
 		//		else: Computer check accusation, then move, then suggestion
 	}
 
+	/*
+	 * turn(): Computer 
+	 *
+	 */
 	public void turn() {
 		//		Roll dice
 		roll = rollDice();
@@ -486,6 +493,10 @@ public class Board {
 		//		clueGameDisplay.update();
 
 	}
+	
+	/*
+	 * mouseClick(): Event process for mouse clicks on screen.
+	 */
 	public void mouseClick(int row, int col) {
 		if (isHumanTurn) {
 			BoardCell cell = getCell(row,col);
@@ -508,6 +519,10 @@ public class Board {
 		}
 	}
 
+	/*
+	 * humanSuggestion(): Processes suggestions made by player.
+	 * Event-driven by GUI
+	 */
 	public void humanSuggestion(Solution suggestion) {
 		if(suggestion == null)return;
 		Player accused = getPlayer(suggestion.getPerson().getCardName());
@@ -569,6 +584,9 @@ public class Board {
 		return null;		
 	}
 
+	/*
+	 * checkAccusation: Checks accusation against answer
+	 */
 	public boolean checkAccusation(Solution accusation) {
 		if(this.theAnswer.getPerson()==accusation.getPerson()&& this.theAnswer.getRoom()==accusation.getRoom()&& this.theAnswer.getWeapon()==accusation.getWeapon()) {
 			return true;

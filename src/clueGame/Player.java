@@ -81,6 +81,7 @@ public abstract class Player {
 		g.drawOval(col*size+offset, row*size, size, size);
 		
 	}
+	
 	//	Getters for testing purposes
 	public Color getColor() {
 		return color;

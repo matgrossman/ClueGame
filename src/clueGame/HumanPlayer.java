@@ -9,7 +9,9 @@ public class HumanPlayer extends Player{
 	public HumanPlayer(String name, String color, int row, int col) {
 		super(name, color, row, col);
 	}
-	
+	/*
+	 * updateOccupancy: Updates occupied status for previous and next boardCells.
+	 */
 	public void updateOccupancy(BoardCell cell) {
 		BoardCell preCell  =  board.getCell(getRow(), getCol());
 		if (preCell.isRoomCenter()) {
