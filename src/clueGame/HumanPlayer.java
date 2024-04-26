@@ -1,3 +1,6 @@
+/*
+ * HumanPlayer: 
+ */
 package clueGame;
 
 import java.awt.Color;

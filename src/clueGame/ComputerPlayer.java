@@ -1,3 +1,7 @@
+/*
+ * ComputerPlayer: Player extension that includes basic AI for computer players.
+ * Authors: Mathew Grossma, Julian Reyes
+ */
 package clueGame;
 
 import java.awt.Color;
@@ -19,20 +23,17 @@ public class ComputerPlayer extends Player{
 	 */
 	public Solution createSuggestion(Room room){
 		Board board = Board.getInstance();
-		ArrayList<Card> roomList = board.getRoomCards();
 		
 		Card weapon = suggestWeapon(board);
 		Card person = suggestPerson(board);
+		Card roomCard = board.getCard(room.getName());
 
-		Card roomCard = null;
-		for (Card c: roomList) {
-			if (room.getName().equals(c.getCardName())){
-				roomCard = c;
-			}
-		}
 		return new Solution(roomCard, person, weapon);
 	}
 	
+	/*
+	 * suggestWeapon: chooses weapon card, prioritizing unseen.
+	 */
 	public Card suggestWeapon(Board board) {
 		ArrayList<Card> weaponList = board.getWeaponCards();
 		Card weapon = null;
@@ -43,11 +44,15 @@ public class ComputerPlayer extends Player{
 			}
 			else {
 				weapon = c;
+				break;
 			}
 		}
 		return weapon;
 	}
 	
+	/*
+	 * suggestPerson: suggestPerson: chooses person card, prioritizng unseen.
+	 */
 	public Card suggestPerson(Board board) {
 		ArrayList<Card> peopleList = board.getPeopleCards();
 		Card person = null;
@@ -58,15 +63,20 @@ public class ComputerPlayer extends Player{
 			}
 			else {
 				person = c;
+				break;
 			}
 		}
 		return person;	
 	}
-	
+	/*
+	 * selectTarget: chooses target cell, prioritizing unseen rooms
+	 */
 	public BoardCell selectTarget(Set<BoardCell> targets) {
 		if(targets.isEmpty()) {
 			return board.getCell(getRow(), getCol());
 		}
+		
+		
 		Board board = Board.getInstance();
 		BoardCell preCell  =  board.getCell(getRow(), getCol());
 		if (preCell.isRoomCenter()) {

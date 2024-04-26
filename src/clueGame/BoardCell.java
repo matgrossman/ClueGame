@@ -1,4 +1,5 @@
 /*
+ * BoardCell: stores information for each cell of board, including location room, and location
  * Authors: Mathew Grossman, Julian Reyes
  */
 
