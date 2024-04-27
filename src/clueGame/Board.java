@@ -1,4 +1,5 @@
 /*
+ * Board: Holds information about game board and does most turn-to-turn logic
  * Authors: Mathew Grossman, Julian Reyes
  */
 package clueGame;

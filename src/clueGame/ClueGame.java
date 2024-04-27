@@ -1,14 +1,7 @@
-/*
- * Authors: Mathew Grossman Julian Reyes
- * ClueGame: JFrame object that draws and starts game
- */
 package clueGame;
 
-import java.awt.BorderLayout;
-import java.awt.Graphics;
 
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 
 public class ClueGame extends JFrame{
 	private BoardPanel Boardpanel = new BoardPanel();
@@ -18,12 +11,6 @@ public class ClueGame extends JFrame{
 		super();
 		this.setSize(800,800);
 	}
-//	public void update() {
-//		controlPanel.updateFields();
-//		cardPanel.updatePanels();
-//	}
-
-	//	Update panels
 
 
 	public BoardPanel getBoardpanel() {

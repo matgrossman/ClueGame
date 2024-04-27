@@ -1,4 +1,5 @@
 /*
+ * Room: Stores data related to Rooms on board
  * Authors: Mathew Grossman, Julian Reyes
  */
 package clueGame;

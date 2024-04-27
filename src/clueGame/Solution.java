@@ -1,3 +1,7 @@
+/*
+ * Solution: Data type that players generate for suggestions/accusations
+ * Authors: Mathew Grossman, Julian Reyes.
+ */
 package clueGame;
 
 public class Solution {
@@ -25,12 +29,7 @@ public class Solution {
 	}
 	
 	public boolean contains(Card c) {
-		if (c.equals(room)|| c.equals(person)|| c.equals(weapon)) {
-			return true;
-		}
-		else {
-			return false;
-		}
+		return (c.equals(room) || c.equals(person) || c.equals(weapon));
 	}
 	
 

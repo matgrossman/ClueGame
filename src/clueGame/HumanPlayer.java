@@ -1,5 +1,6 @@
 /*
- * HumanPlayer: 
+ * HumanPlayer: Human-controlled implementation of Player class
+ * Authors: Mathew Grossman, Julian Reyes
  */
 package clueGame;
 
@@ -32,12 +33,6 @@ public class HumanPlayer extends Player{
 			board.getRoom(cell).addOccupant(this);
 		}
 	}
-
-	public Solution createSuggestion(Room room) {
-		
-		return null;
-	}
-
 	
 	
 }

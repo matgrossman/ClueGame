@@ -1,3 +1,7 @@
+/*
+ * Player: stores basic information about each player. Extended to human and computer variations
+ * Authors: Mathew Grossman, Julian Reyes
+ */
 package clueGame;
 
 import java.awt.Color;
